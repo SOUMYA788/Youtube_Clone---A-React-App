@@ -1,0 +1,10 @@
+.videoCard_videoLinks,
+.videoCard_videoChannelLink{
+    text-decoration: none;
+    color: black;
+}
+
+.videoCard_videoChannelLink{
+    display:flex;
+    flex-direction: row;
+}

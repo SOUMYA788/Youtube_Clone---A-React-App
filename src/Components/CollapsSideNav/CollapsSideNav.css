@@ -1,0 +1,27 @@
+.collapsSideNavLink {
+	text-decoration: none;
+	color: black;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	width: 100%;
+	margin-bottom: 15px;
+	padding: 5px;
+	transition: 0.2s ease;
+	border-radius: 5px;
+}
+
+.collapsNavLinksIcon {
+	width: 20px !important;
+	height: 20px !important;
+	margin-right: 5px;
+}
+
+.collapsSideNavLinkActive,
+.collapsSideNavLink:hover {
+	background-color: #bbbbbb;
+}
+
+.hideCollapsNav {
+	left: -200px !important;
+}

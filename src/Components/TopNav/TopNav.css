@@ -1,0 +1,71 @@
+.homeLink {
+	cursor: pointer;
+	text-decoration: none;
+	color: black;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.topNavSearchBar {
+	min-width: 25px;
+	padding: 5px 10px;
+	outline: none;
+	border: none;
+	border-radius: 25px;
+	margin: 2px;
+	flex: 1;
+}
+
+.searchForm{
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    border: 1px solid #cdcdcd;
+    border-radius: 25px;
+    -webkit-flex: 0.5;
+    -ms-flex: 0.5;
+    flex: 0.5;
+}
+
+.topNavSearchEnterBtn {
+	width: 50px;
+	min-width: 50px;
+	height: 30px;
+	outline: none;
+	border: none;
+	border-top-right-radius: 25px;
+	border-bottom-right-radius: 25px;
+	border-left: 1px solid #cdcdcd;
+	background-color: #f8f8f8;
+	cursor: pointer;
+}
+
+.topNavSearchEnterBtn:hover {
+	background-color: #d3d3d3;
+}
+
+.topNavLeftIcons {
+    width: 35px;
+    height: 35px;
+    padding: 7px;
+	margin: 0 5px;
+    border-radius: 25px;
+    cursor: pointer;
+	transition: 0.2s ease;
+}
+
+.topNavLeftIcons:hover{
+	background-color: #d3d3d3;
+}
