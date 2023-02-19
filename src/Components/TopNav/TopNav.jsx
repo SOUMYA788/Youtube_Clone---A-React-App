@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material'
-import { Menu, Search, YouTube, AccountCircle } from '@mui/icons-material';
+import { Menu, Search, YouTube, AccountCircle, Mic } from '@mui/icons-material';
 import "./TopNav.css"
 import { NotificationIcon, VideoCallIcon } from '../../Assets/Icons';
 
@@ -21,7 +21,8 @@ const TopNav = () => {
     width: "100%",
     height: "100%",
     ...flexRowCenter,
-    padding: "0 18px"
+    padding: "0 1%",
+    position: "relative"
   }
 
   const topNavElements = {
@@ -39,7 +40,7 @@ const TopNav = () => {
   const topNavSearchEnterBtnLogo = {
     width: "100%",
     height: "100%",
-    padding: "10%",
+    padding: "5%",
     color: "#0f0f0f"
   }
 
@@ -47,17 +48,26 @@ const TopNav = () => {
     width: "1.5em",
     height: "1.5em",
     cursor: "pointer",
-    marginRight: "20px",
-    padding: "4px",
+    marginRight: "10px",
+    padding: "2%",
     borderRadius: "25px",
     ":hover": {
       background: "#d3d3d3",
     }
   }
 
+  const youtubeLogoStyle = {
+    color: "red",
+    marginRight: "5px",
+    fontSize: "1.5em",
+    width: "1.5em",
+    height: "1.5em"
+  }
+
   const searchSubmit = (e) => {
     e.preventDefault();
     navigate(`/search/${searchValue}`)
+    setSearchValue("")
   }
 
   return (
@@ -66,19 +76,38 @@ const TopNav = () => {
       <Box sx={topNavElements}>
         <Menu sx={navToggleBtnStyle} onClick={() => { document.getElementById("collapsSideNavMainContainer").classList.toggle("hideCollapsNav") }} />
         <Link className="homeLink" to='/'>
-          <YouTube sx={{ color: "red", marginRight: "5px" }} />
+          <YouTube sx={youtubeLogoStyle} />
           <Typography variant='p' component="p">YouTube</Typography>
         </Link>
       </Box>
 
-      <Box sx={{flex: "0.8"}}>
+      <div
+        id='topNavSearchDiv'
+        onFocus={(e) => { document.getElementById("topNavSearchDiv").classList.add("fullSearchBar") }}
+        onBlur={() => { document.getElementById("topNavSearchDiv").classList.remove("fullSearchBar") }}>
+
         <form className='searchForm' onSubmit={searchSubmit}>
           <input type="text" placeholder='Search' className='topNavSearchBar' value={searchValue} onChange={(e) => { setSearchValue(e.target.value) }} />
-          <button type="submit" className='topNavSearchEnterBtn' >
+          <button type="submit" className='topNavSearchEnterBtn' title='search'>
             <Search sx={topNavSearchEnterBtnLogo} />
           </button>
         </form>
-      </Box>
+        <Mic sx={{
+          width: "1.5em",
+          height: "1.5em",
+          fontSize: "1.5em",
+          padding: "5px",
+          borderRadius: "25px",
+          transition: "0.1s ease",
+          marginLeft: "5px",
+          cursor: "pointer",
+          ":hover": {
+            backgroundColor: "#d3d3d3"
+          }
+        }} title="voice search"/>
+
+
+      </div>
 
       <Box sx={flexRowCenter}>
         <VideoCallIcon className="topNavLeftIcons" />
