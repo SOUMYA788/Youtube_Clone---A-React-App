@@ -9,7 +9,7 @@ const Home = ({ currentTab }) => {
   }, [currentTab])
   return (
 
-    <Video videos={videos} videoHeight="215px" />
+    <Video videos={videos} />
 
   )
 }

@@ -29,7 +29,7 @@ const Player = () => {
     const playerContainerStyle = {
         ...full_width_height,
         display: "flex",
-        flexDirection: { xs: "column", md: "row" }
+        flexDirection: { xs: "column", sm: "row" }
     }
 
     const playerBoxStyle = {
@@ -39,36 +39,58 @@ const Player = () => {
         justifyContent: "center",
         alignItems: "flex-start",
         flexDirection: "column",
-        padding: {
-            xs: "10px",
-            sm: "0 10px"
-        },
-        borderBottom:"2px solid black"
+        padding: "2vw",
+        borderBottom: { xs: "2px solid black", sm: "none" }
     }
 
     const relatedVideosBox = {
-        height: { xs: "200px", md: "100%" },
-        width: { xs: "100%", md: "300px" },
+        height: { xs: "200px", sm: "100%" },
+        width: { xs: "100%", sm: "25vw" },
         overflowY: "scroll",
         scrollBehavior: "smooth"
     }
 
+    const videoAspectRatio = {
+        xsVideoWidth: 96,
+        xsVideoHeight: ((96 * 56.25) / 100),
+        smVideoWidth: (96 - 25),
+        smVideoHeight: (((96 - 25) * 56.25) / 100)
+    }
+
     console.log(playerVideos)
     const { id, title, channelTitle, channelId, viewCount } = playerVideos;
+
     return (
         <Box sx={playerContainerStyle}>
             <Box sx={playerBoxStyle}>
-                <Box sx={{ width: "100%", flex: "1" }}>
-                    <ReactPlayer controls="true" className="reactPlayer" url={`https://www.youtube.com/watch?v=${id}`} width="100%" height="100%" style={{ objectFit: "contain" }} />
-                </Box>
-                <Typography component="h2" variant='h2' sx={{ fontSize: "1em", margin: "1% 0" }}>
-                    {title}
-                </Typography>
-                <Link className='playerLinks' to={`/channel/${channelId}`}>
-                    <span> {channelTitle} </span>  <span> {viewCount && `${parseInt(viewCount).toLocaleString()} Views` } </span>
-                </Link>
+
+                <div>
+                    <Box sx={{
+                        width: {
+                            xs: `${videoAspectRatio.xsVideoWidth}vw`,
+                            sm: `${videoAspectRatio.smVideoWidth}vw`,
+                        },
+                        height: {
+                            xs: `${videoAspectRatio.xsVideoHeight}vw`,
+                            sm: `${videoAspectRatio.smVideoHeight}vw`,
+                        },
+                        margin: "0 auto"
+                    }}>
+                        <ReactPlayer controls url={`https://www.youtube.com/watch?v=${id}`} width="100%" height="100%" />
+                    </Box>
+
+                    <Typography component="h2" variant='h2' sx={{ fontSize: "1em", margin: "1% 0" }}>
+                        {title}
+                    </Typography>
+
+                    <Link className='playerLinks' to={`/channel/${channelId}`}>
+                        <span> {channelTitle} </span>  <span> {viewCount && `${parseInt(viewCount).toLocaleString()} Views`} </span>
+                    </Link>
+                </div>
+
             </Box>
-            <Box className="scrollDiv" sx={relatedVideosBox}>
+
+            <Box sx={relatedVideosBox}>
                 <Video videos={relatedVideos} videoDirection="column" />
             </Box>
         </Box>

@@ -7,34 +7,38 @@
 	align-items: center;
 }
 
-#topNavSearchDiv{
-	flex: 0.8;
-	height: 70%;
+.navBoxShowHide {
 	display: flex;
+}
+
+#topNavSearchDiv {
+	flex: 0.9;
+	height: 70%;
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
+	background-color: white;
 }
 
-.searchForm{
+.searchForm {
 	height: 100%;
 	width: 100%;
 	display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
-    justify-content: space-between;
-    border: 1px solid #cdcdcd;
-    border-radius: 25px;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-flex-direction: row;
+	-ms-flex-direction: row;
+	flex-direction: row;
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	justify-content: space-between;
+	border: 1px solid #cdcdcd;
+	border-radius: 25px;
 	background-color: white;
 }
 
@@ -66,21 +70,29 @@
 }
 
 .topNavLeftIcons {
-    width: 35px;
-    height: 35px;
-    padding: 7px;
+	width: 35px;
+	height: 35px;
+	padding: 7px;
 	margin: 0 5px;
-    border-radius: 25px;
-    cursor: pointer;
+	border-radius: 25px;
+	cursor: pointer;
 	transition: 0.2s ease;
 }
 
-.topNavLeftIcons:hover{
+.topNavLeftIcons:hover {
 	background-color: #d3d3d3;
 }
 
-@media screen and (max-width:"500px"){
-	.fullSearchBar{
+@media only screen and (max-width:600px) {
+
+	.navBoxShowHide {
+		display: none;
+	}
+
+	.fullSearchBar.navBoxShowHide {
 		position: absolute;
+		display: flex;
+		width: 100%;
+		padding: 0 20px;
 	}
 }

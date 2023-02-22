@@ -2,31 +2,48 @@ import React from 'react'
 import { Box } from '@mui/system';
 import { VideoCard, ChannelCard } from '../';
 
-const Video = ({ videos, videoDirection, videoHeight }) => {
+const Video = ({ videos, videoDirection }) => {
     if (!videos?.length) return "Loading...";
     console.log(videos)
+
+    const video_mainContainer = {
+        width: "100%",
+        height: "100%",
+        padding: "2%",
+        display: "flex",
+        flexDirection: {
+            xs: "column",
+            sm: videoDirection || "row"
+        },
+        flexWrap: {
+            xs: "nowrap",
+            sm: videoDirection ? "nowrap" : "wrap"
+        }
+    }
+
+    const videoCardHolder = {
+        width: {
+            xs: "80vw",
+            sm: videoDirection ? "100%" : "30vw"
+        },
+        minHeight: {
+            sm: "30vw"
+        },
+        margin: {
+            xs: "5px auto",
+            sm: videoDirection ? "10px auto" : "1%"
+        },
+        cursor: "pointer"
+    }
+    
+
     return (
-        <Box sx={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            flexDirection: {
-                xs: videoDirection ? "row" : "column",
-                md: videoDirection || "row"
-            },
-        }} flexWrap={{ xs: videoDirection ? "wrap" : "nowrap", md: videoDirection ? "nowrap" : "wrap" }}>
+        <Box sx={video_mainContainer} >
             {
                 videos.map((videoElement, indx) => (
-                    <Box height={videoHeight || "215px"} sx={{
-                        width: "240px",
-                        margin: { xs: "5px auto", md: videoDirection ? "5px auto" : "5px" },
-                        cursor: "pointer"
-                    }} key={`${videoElement?.type}_${indx}`}>
-
+                    <Box sx={videoCardHolder} key={`${videoElement?.type}_${indx}`}>
                         {videoElement?.type === "channel" && <ChannelCard channelCardInfo={videoElement} />}
-
                         {videoElement?.type === "video" && <VideoCard videoInfo={videoElement} />}
-
                     </Box>
                 ))
             }

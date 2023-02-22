@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material'
-import { Menu, Search, YouTube, AccountCircle, Mic } from '@mui/icons-material';
+import { Menu, Search, YouTube, AccountCircle, Mic, KeyboardBackspaceRounded } from '@mui/icons-material';
 import "./TopNav.css"
 import { NotificationIcon, VideoCallIcon } from '../../Assets/Icons';
 
@@ -22,7 +22,9 @@ const TopNav = () => {
     height: "100%",
     ...flexRowCenter,
     padding: "0 1%",
-    position: "relative"
+    position: "relative",
+    borderBottom: "1px solid #cdcdcd",
+    borderTop: "1px solid #cdcdcd",
   }
 
   const topNavElements = {
@@ -37,23 +39,29 @@ const TopNav = () => {
     flex: "0.5"
   }
 
+  const iconStyle = {
+    width: "1.5em",
+    height: "1.5em",
+    fontSize: "1.5em",
+    padding: "5px",
+    borderRadius: "25px",
+    transition: "0.1s ease",
+    cursor: "pointer",
+    ":hover": {
+      backgroundColor: "#d3d3d3"
+    }
+  }
+
   const topNavSearchEnterBtnLogo = {
     width: "100%",
     height: "100%",
-    padding: "5%",
+    padding: "5px",
     color: "#0f0f0f"
   }
 
   const navToggleBtnStyle = {
-    width: "1.5em",
-    height: "1.5em",
-    cursor: "pointer",
     marginRight: "10px",
-    padding: "2%",
-    borderRadius: "25px",
-    ":hover": {
-      background: "#d3d3d3",
-    }
+    ...iconStyle
   }
 
   const youtubeLogoStyle = {
@@ -62,6 +70,19 @@ const TopNav = () => {
     fontSize: "1.5em",
     width: "1.5em",
     height: "1.5em"
+  }
+
+  const focusMenu = (focus) => {
+    let targetId = document.getElementById("collapsSideNavMainContainer")
+    if (focus) {
+      if (targetId.classList.contains("hideCollapsNav")) {
+        document.getElementById("collapsSideNavMainContainer").classList.remove("hideCollapsNav")
+      }
+    } else {
+      if (!targetId.classList.contains("hideCollapsNav")) {
+        document.getElementById("collapsSideNavMainContainer").classList.add("hideCollapsNav")
+      }
+    }
   }
 
   const searchSubmit = (e) => {
@@ -73,18 +94,39 @@ const TopNav = () => {
   return (
     <Box sx={topNavMainContainer}>
 
-      <Box sx={topNavElements}>
-        <Menu sx={navToggleBtnStyle} onClick={() => { document.getElementById("collapsSideNavMainContainer").classList.toggle("hideCollapsNav") }} />
+      <Box component="div" sx={topNavElements}>
+        <Menu
+          sx={navToggleBtnStyle}
+          onClick={(e) => {
+            e.stopPropagation()
+            document.getElementById("collapsSideNavMainContainer").classList.toggle("hideCollapsNav")
+          }} />
+
         <Link className="homeLink" to='/'>
           <YouTube sx={youtubeLogoStyle} />
           <Typography variant='p' component="p">YouTube</Typography>
+
         </Link>
       </Box>
 
-      <div
-        id='topNavSearchDiv'
-        onFocus={(e) => { document.getElementById("topNavSearchDiv").classList.add("fullSearchBar") }}
-        onBlur={() => { document.getElementById("topNavSearchDiv").classList.remove("fullSearchBar") }}>
+      <div id='topNavSearchDiv' className='navBoxShowHide'>
+
+        <KeyboardBackspaceRounded
+          id="search_BackIcon"
+          focusable="true"
+          tabIndex="1"
+          sx={{
+            display: {
+              xs: "inline-block",
+              sm: "none"
+            },
+            ...iconStyle,
+            marginRight: "5px"
+          }}
+          onFocus={() => {
+            document.getElementById("topNavSearchDiv").classList.remove("fullSearchBar")
+          }}
+        />
 
         <form className='searchForm' onSubmit={searchSubmit}>
           <input type="text" placeholder='Search' className='topNavSearchBar' value={searchValue} onChange={(e) => { setSearchValue(e.target.value) }} />
@@ -92,27 +134,40 @@ const TopNav = () => {
             <Search sx={topNavSearchEnterBtnLogo} />
           </button>
         </form>
-        <Mic sx={{
-          width: "1.5em",
-          height: "1.5em",
-          fontSize: "1.5em",
-          padding: "5px",
-          borderRadius: "25px",
-          transition: "0.1s ease",
-          marginLeft: "5px",
-          cursor: "pointer",
-          ":hover": {
-            backgroundColor: "#d3d3d3"
-          }
-        }} title="voice search"/>
 
-
+        <Mic sx={iconStyle} title="voice search" />
       </div>
 
       <Box sx={flexRowCenter}>
+
+        <Search
+          focusable="true"
+          tabIndex="1"
+          onFocus={() => { document.getElementById("topNavSearchDiv").classList.add("fullSearchBar") }}
+          sx={{
+            display: {
+              xs: "inline-block",
+              sm: "none"
+            },
+            width: "1.5em",
+            height: "1.5em",
+            fontSize: "1.5em",
+            padding: "7px",
+            borderRadius: "25px",
+            transition: "0.1s ease",
+            cursor: "pointer",
+            margin: "0 auto",
+            outline: "none",
+            ":hover": {
+              backgroundColor: "#d3d3d3"
+            }
+          }}
+        />
+
         <VideoCallIcon className="topNavLeftIcons" />
         <NotificationIcon className="topNavLeftIcons" />
         <AccountCircle sx={{ margin: "0 10px", cursor: "pointer", width: "30px", height: "30px", color: "red" }} />
+
       </Box>
 
     </Box>

@@ -21,12 +21,27 @@ const CollapsSideNav = ({ collapsNavData, currentTab, setCurrentTab }) => {
     <Box id="collapsSideNavMainContainer" sx={sideNavContainerStyle} className="hideCollapsNav scrollDiv">
       {
         collapsNavData.map((collapsNavDataElement, indx) => (
-          <Link className={collapsNavDataElement.name === currentTab ? "collapsSideNavLink collapsSideNavLinkActive" : "collapsSideNavLink"} to={`/${collapsNavDataElement.name}`} key={`${collapsNavDataElement.name}_${indx}`} onClick={() => { setCurrentTab(collapsNavDataElement.name) }}>
+          <Link
+            className={collapsNavDataElement.name === currentTab ? "collapsSideNavLink collapsSideNavLinkActive" : "collapsSideNavLink"}
+            to={collapsNavDataElement.name === "home" ? "/" : `/search/${collapsNavDataElement.name}`}
+            key={`${collapsNavDataElement.name}_${indx}`}
+            onClick={() => {
+              setCurrentTab(collapsNavDataElement.name)
+              if (!document.getElementById("collapsSideNavMainContainer").classList.contains("hideCollapsNav")) {
+                document.getElementById("collapsSideNavMainContainer").classList.add("hideCollapsNav")
+              }
+            }}>
+
             {collapsNavDataElement.name === currentTab ? <collapsNavDataElement.active_icon className="collapsNavLinksIcon" /> : <collapsNavDataElement.icon className="collapsNavLinksIcon" />}
+
             <Typography variant='p' component="p" sx={{
               fontSize: "0.8rem",
-              textTransform:"capitalize"
-            }}>{collapsNavDataElement.name}</Typography>
+              textTransform: "capitalize"
+            }}>
+
+              {collapsNavDataElement.name}
+
+            </Typography>
           </Link>
         ))
       }

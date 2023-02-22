@@ -43,26 +43,41 @@ const Channel = () => {
     flexDirection: {
       xs: "column",
       sm: "row"
-    }
+    },
+    padding: "0 10px"
+  }
+
+  const channelVideoCardContainer = {
+    width: {
+      xs: "80%",
+      sm: "31%"
+    },
+    margin: {
+      xs: "5px auto",
+      sm: "6px"
+    },
+    cursor: "pointer"
   }
 
   return (
     <Box sx={channelMainContainerBoxStyle}>
+
       <Box sx={channelBannerStyle} component="img" src={image?.banner[0]?.url} />
-      <Box sx={{ width: "100%", height: "80px" }}>
+
+      <Box sx={{ width: "100%", height: "80px", margin: "10px 0", padding: "0 10px" }}>
         <ChannelCard channelCardInfo={channelData} channelCardDirection="row" channelCardLogoSize="55px" />
       </Box>
-      <Box sx={videoBoxStyle}>
 
+      <Box sx={videoBoxStyle}>
         {
           channelVideos.map((videoElement, indx) => (
-            <Box id="channelVideoCardContainer" key={`${videoElement?.type}_${indx}`}>
+            <Box sx={channelVideoCardContainer} key={`${videoElement?.type}_${indx}`}>
               <VideoCard videoInfo={videoElement} />
             </Box>
           ))
         }
-
       </Box>
+
     </Box>
   )
 

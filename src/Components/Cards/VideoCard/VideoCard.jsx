@@ -9,7 +9,7 @@ const VideoCard = ({ videoInfo }) => {
 
       <Box width="100%">
         <Link className='videoCard_videoLinks' to={`/video/${videoInfo.videoId}`}>
-          <Box component="img" variant='img' src={videoInfo?.thumbnail[0]?.url} alt={videoInfo.title} sx={{ width: "100%", objectFit: "contain", borderRadius: "10px" }} />
+          <Box component="img" variant='img' src={videoInfo?.thumbnail[0]?.url} alt={videoInfo.title} sx={{ width: "100%", height:"100%", objectFit: "contain", borderRadius: "10px" }} />
         </Link>
       </Box>
 
@@ -32,11 +32,11 @@ const VideoCard = ({ videoInfo }) => {
             </Box>
 
             <Box>
-              <Typography component="p" variant='p' sx={{ fontSize: "0.6em" }}>
+              <Typography component="p" variant='p' sx={{ fontSize: "0.7em" }}>
                 {videoInfo?.channelTitle}
               </Typography>
 
-              <Typography component="p" variant='p' sx={{ fontSize: "0.6em", margin: "3% 0" }}>
+              <Typography component="p" variant='p' sx={{ fontSize: "0.7em", margin: "3% 0" }}>
                 {parseInt(videoInfo?.viewCount).toLocaleString()} Views • {videoInfo?.publishedText || videoInfo?.publishedTimeText}
               </Typography>
             </Box>
