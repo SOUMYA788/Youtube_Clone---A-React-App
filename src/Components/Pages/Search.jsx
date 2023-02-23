@@ -19,16 +19,12 @@ const Search = () => {
   const [showFilter, setShowFilter] = useState(false)
   const { searchId } = useParams();
 
-  const updateFilterState = ({ key, value }) => {
-    if (key === "features") {
-      setFeatureFilter((prev) => {
-        return ([...prev, value])
-      })
-    } else {
-      setFilterStates((prev) => {
-        return ({ ...prev, [key]: value })
-      })
-    }
+  const filterOptionsStyle = {
+    fontSize: "1em",
+    cursor: "pointer",
+    padding: "1%",
+    margin: "10px 0",
+    borderBottom: "1px solid transparent"
   }
 
   const setFilter = () => {
@@ -39,7 +35,7 @@ const Search = () => {
         let filterHeadding = filterElement[0];
         let filters = filterElement[1];
         return (
-          <Box key={`${filterHeadding}_${indx}`}>
+          <Box key={`${filterHeadding}_${indx}`} sx={{margin:"0 auto", padding:"0 5px"}}>
             <Typography component="h2" variant='h2' sx={{ fontSize: "1em" }}>
               {filterHeadding.toUpperCase()}
             </Typography>
@@ -49,10 +45,42 @@ const Search = () => {
                   <Typography
                     component="p"
                     variant='p'
-                    sx={{ fontSize: "1em", cursor: "pointer", padding: "1%", margin: "10px 0" }}
+                    sx={() => {
+
+                      if (filterStates.type === filterItem || filterStates.duration === filterItem || filterStates.upload_date === filterItem || filterStates.sort_by === filterItem || featureFilter.includes(filterItem)) {
+                        return ({
+                          ...filterOptionsStyle,
+                          borderBottom: "1px solid #bfbfbf"
+                        })
+                      }
+                      else {
+                        return ({
+                          ...filterOptionsStyle
+                        })
+                      }
+                    }}
                     key={`${filterItem}_${indx}`} title={filterItem}
                     onClick={() => {
-                      updateFilterState(filterHeadding, filterItem)
+                      let key = filterHeadding;
+                      let value = filterItem;
+                      console.log(`key : ${key}\nvalue : ${value}`)
+                      if (key === "features") {
+                        setFeatureFilter((prev) => {
+                          if (featureFilter.includes(filterItem)) {
+                            return (prev.filter((prevItem) => {
+                              if (prevItem != filterItem) {
+                                return (prevItem)
+                              }
+                            }))
+                          } else {
+                            return ([...prev, value])
+                          }
+                        })
+                      } else {
+                        setFilterStates((prev) => {
+                          return ({ ...prev, [key]: value })
+                        })
+                      }
                     }}>
 
                     {filterItem}
@@ -76,7 +104,7 @@ const Search = () => {
   }
 
   useEffect(() => {
-    let type = filterStates.type && `&video=${filterStates.type}`;
+    let type = filterStates.type && `&type=${filterStates.type}`;
     let duration = filterStates.duration && `&duration=${filterStates.duration}`;
     let uploadDate = filterStates.upload_date && `&upload_date=${filterStates.upload_date}`
     let sortBy = filterStates.sort_by && `&sort_by=${filterStates.sort_by}`
@@ -90,13 +118,17 @@ const Search = () => {
       url = `search?query=${searchId}${type || ""}${duration || ""}${uploadDate || ""}${sortBy || ""}${featureList || ""}`
     }
 
+    console.log("logging url")
     console.log(url)
+    console.log("logging filters")
+    console.log(filterStates)
+
 
     if (url) {
       YoutubeAPI(url).then((data) => { setSearchVideos(data.data) })
     }
 
-  }, [searchId, filterStates.type, filterStates.duration, filterStates.upload_date, filterStates.sort_by , featureFilter])
+  }, [searchId, filterStates, featureFilter])
 
   console.log(searchVideos);
 
@@ -136,7 +168,10 @@ const Search = () => {
             margin: "20px auto 0",
             display: "flex",
             flexDirection: "row",
-            justifyContent: "space-between"
+            justifyContent: "space-between",
+            overflowX:"scroll",
+            scrollBehavior:"smooth",
+            gap:"5px"
           }}>
             {setFilter()}
           </Box>
