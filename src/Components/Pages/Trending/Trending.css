@@ -1,0 +1,9 @@
+.trendingLinks{
+    text-decoration: none;
+    color: black;
+    border: 1px solid transparent;
+}
+
+.trendingLinks.active{
+    border-bottom: 1px solid #bbbbbb;
+}

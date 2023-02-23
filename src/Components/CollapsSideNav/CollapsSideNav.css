@@ -1,12 +1,8 @@
 .collapsSideNavLink {
 	text-decoration: none;
 	color: black;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	width: 100%;
+	height: 100%;
 	margin-bottom: 15px;
-	padding: 5px;
 	transition: 0.2s ease;
 	border-radius: 5px;
 }
@@ -17,11 +13,20 @@
 	margin-right: 5px;
 }
 
-.collapsSideNavLinkActive,
+.collapsSideNavLink.active,
 .collapsSideNavLink:hover {
 	background-color: #bbbbbb;
 }
 
 .hideCollapsNav {
 	left: -200px !important;
+}
+
+@media screen and (max-width:599px) {
+	.collapsSideNavLink{
+		margin-bottom: 0;
+	}
+	.collapsSideNavLink:hover {
+		background-color: none;
+	}
 }

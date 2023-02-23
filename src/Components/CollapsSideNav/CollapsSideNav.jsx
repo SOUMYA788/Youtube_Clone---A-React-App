@@ -1,29 +1,67 @@
 import { Box, Typography } from '@mui/material'
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import "./CollapsSideNav.css"
 const CollapsSideNav = ({ collapsNavData, currentTab, setCurrentTab }) => {
 
   const sideNavContainerStyle = {
-    height: "100%",
-    width: "155px",
-    padding: "10px",
-    msOverflowY: "scroll",
-    overflowY: "scroll",
+    height: {
+      xs: "50px",
+      sm: "100%"
+    },
+    width: {
+      xs: "100%",
+      sm: "155px"
+    },
+    display: "flex",
+    flexDirection: {
+      xs: "row",
+      sm: "column"
+    },
+    flexWrap: "nowrap",
+    gap: {
+      xs: "0",
+      sm: "10px",
+    },
+    padding: {
+      xs: "5px",
+      sm: "10px",
+    },
+    overflowY: {
+      sm: "scroll",
+      xs: "hidden"
+    },
+    overflowX: {
+      sm: "hidden",
+      xs: "scroll"
+    },
     scrollBehavior: "smooth",
-    position: "absolute",
+    position: {
+      xs: "static",
+      sm: "absolute",
+    },
     left: "0",
     top: "0",
     background: "white"
   }
 
+  const setLink = (link) => {
+    if (link.toLowerCase() === "home") {
+      return ("/")
+    } else if (link.toLowerCase() === "trending") {
+      return ("/trending/now")
+    } else {
+      return (`/search/${link}`)
+    }
+  }
   return (
     <Box id="collapsSideNavMainContainer" sx={sideNavContainerStyle} className="hideCollapsNav scrollDiv">
       {
         collapsNavData.map((collapsNavDataElement, indx) => (
-          <Link
-            className={collapsNavDataElement.name === currentTab ? "collapsSideNavLink collapsSideNavLinkActive" : "collapsSideNavLink"}
-            to={collapsNavDataElement.name === "home" ? "/" : `/search/${collapsNavDataElement.name}`}
+
+          <NavLink
+            className={"collapsSideNavLink"}
+            to={setLink(collapsNavDataElement.name)}
             key={`${collapsNavDataElement.name}_${indx}`}
             onClick={() => {
               setCurrentTab(collapsNavDataElement.name)
@@ -32,17 +70,30 @@ const CollapsSideNav = ({ collapsNavData, currentTab, setCurrentTab }) => {
               }
             }}>
 
-            {collapsNavDataElement.name === currentTab ? <collapsNavDataElement.active_icon className="collapsNavLinksIcon" /> : <collapsNavDataElement.icon className="collapsNavLinksIcon" />}
-
-            <Typography variant='p' component="p" sx={{
-              fontSize: "0.8rem",
-              textTransform: "capitalize"
+            <Box sx={{
+              width: {
+                sm: "100%",
+                xs: "125px"
+              },
+              height: "100%",
+              padding: "5px",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center"
             }}>
 
-              {collapsNavDataElement.name}
+              {collapsNavDataElement.name === currentTab ? <collapsNavDataElement.active_icon className="collapsNavLinksIcon" /> : <collapsNavDataElement.icon className="collapsNavLinksIcon" />}
 
-            </Typography>
-          </Link>
+              <Typography variant='p' component="p" sx={{
+                fontSize: "0.8rem",
+                textTransform: "capitalize"
+              }}>
+                {collapsNavDataElement.name}
+              </Typography>
+            </Box>
+          </NavLink>
+
         ))
       }
     </Box>

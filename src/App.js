@@ -18,7 +18,10 @@ function App() {
     height: "calc(100vh - 50px)",
     width: "100%",
     display: "flex",
-    flexDirection: "row",
+    flexDirection:{
+      xs:"column",
+      sm:"row",
+    }, 
     position: "relative"
   }
 

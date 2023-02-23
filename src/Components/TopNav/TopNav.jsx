@@ -61,7 +61,11 @@ const TopNav = () => {
 
   const navToggleBtnStyle = {
     marginRight: "10px",
-    ...iconStyle
+    ...iconStyle,
+    display: {
+      xs: "none",
+      sm: "inline-block"
+    }
   }
 
   const youtubeLogoStyle = {
@@ -87,7 +91,9 @@ const TopNav = () => {
 
   const searchSubmit = (e) => {
     e.preventDefault();
-    navigate(`/search/${searchValue}`)
+    if (searchValue) {
+      navigate(`/search/${searchValue}`)
+    }
     setSearchValue("")
   }
 
@@ -105,7 +111,6 @@ const TopNav = () => {
         <Link className="homeLink" to='/'>
           <YouTube sx={youtubeLogoStyle} />
           <Typography variant='p' component="p">YouTube</Typography>
-
         </Link>
       </Box>
 
