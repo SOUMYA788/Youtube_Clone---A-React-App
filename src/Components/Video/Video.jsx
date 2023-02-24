@@ -9,7 +9,7 @@ const Video = ({ videos, videoDirection }) => {
     const video_mainContainer = {
         width: "100%",
         height: "100%",
-        padding: "2%",
+        padding: "1%",
         display: "flex",
         flexDirection: {
             xs: "column",
@@ -27,7 +27,7 @@ const Video = ({ videos, videoDirection }) => {
             sm: videoDirection ? "100%" : "30vw"
         },
         minHeight: {
-            sm: "30vw"
+            sm: "20vw"
         },
         margin: {
             xs: "5px auto",
@@ -35,7 +35,7 @@ const Video = ({ videos, videoDirection }) => {
         },
         cursor: "pointer"
     }
-    
+
 
     return (
         <Box sx={video_mainContainer} >
@@ -43,7 +43,7 @@ const Video = ({ videos, videoDirection }) => {
                 videos.map((videoElement, indx) => (
                     <Box sx={videoCardHolder} key={`${videoElement?.type}_${indx}`}>
                         {videoElement?.type === "channel" && <ChannelCard channelCardInfo={videoElement} />}
-                        {videoElement?.type === "video" && <VideoCard videoInfo={videoElement} />}
+                        {(videoElement?.type === "video" || videoElement?.videoId) && <VideoCard videoInfo={videoElement} />}
                     </Box>
                 ))
             }

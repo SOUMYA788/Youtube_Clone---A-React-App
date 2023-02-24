@@ -32,19 +32,30 @@ const TopNav = () => {
   }
 
   // style for search bar box, temporary unused...
+  /*
   const searchBarBoxStyle = {
     ...flexRowCenter,
     border: "1px solid #cdcdcd",
     borderRadius: "25px",
     flex: "0.5"
   }
+  */
 
   const iconStyle = {
-    width: "1.5em",
-    height: "1.5em",
-    fontSize: "1.5em",
+    width: {
+      sm: "1.5em",
+      xs: "1.4em"
+    },
+    height: {
+      sm: "1.5em",
+      xs: "1.4em"
+    },
+    fontSize: {
+      sm: "1.5em",
+      xs: "1.4em"
+    },
     padding: "5px",
-    borderRadius: "25px",
+    borderRadius: "50%",
     transition: "0.1s ease",
     cursor: "pointer",
     ":hover": {
@@ -76,19 +87,6 @@ const TopNav = () => {
     height: "1.5em"
   }
 
-  const focusMenu = (focus) => {
-    let targetId = document.getElementById("collapsSideNavMainContainer")
-    if (focus) {
-      if (targetId.classList.contains("hideCollapsNav")) {
-        document.getElementById("collapsSideNavMainContainer").classList.remove("hideCollapsNav")
-      }
-    } else {
-      if (!targetId.classList.contains("hideCollapsNav")) {
-        document.getElementById("collapsSideNavMainContainer").classList.add("hideCollapsNav")
-      }
-    }
-  }
-
   const searchSubmit = (e) => {
     e.preventDefault();
     if (searchValue) {
@@ -115,7 +113,6 @@ const TopNav = () => {
       </Box>
 
       <div id='topNavSearchDiv' className='navBoxShowHide'>
-
         <KeyboardBackspaceRounded
           id="search_BackIcon"
           focusable="true"
@@ -134,7 +131,9 @@ const TopNav = () => {
         />
 
         <form className='searchForm' onSubmit={searchSubmit}>
-          <input type="text" placeholder='Search' className='topNavSearchBar' value={searchValue} onChange={(e) => { setSearchValue(e.target.value) }} />
+          <input type="text" placeholder='Search' className='topNavSearchBar' value={searchValue} onChange={(e) => {
+            setSearchValue(e.target.value)
+          }} />
           <button type="submit" className='topNavSearchEnterBtn' title='search'>
             <Search sx={topNavSearchEnterBtnLogo} />
           </button>

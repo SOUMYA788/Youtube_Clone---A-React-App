@@ -13,8 +13,7 @@
 	margin-right: 5px;
 }
 
-.collapsSideNavLink.active,
-.collapsSideNavLink:hover {
+.collapsSideNavLink.active {
 	background-color: #bbbbbb;
 }
 
@@ -22,11 +21,14 @@
 	left: -200px !important;
 }
 
+@media screen and (min-width:600px) {
+	.collapsSideNavLink:hover {
+		background-color: #bbbbbb;
+	}
+}
+
 @media screen and (max-width:599px) {
 	.collapsSideNavLink{
 		margin-bottom: 0;
-	}
-	.collapsSideNavLink:hover {
-		background-color: none;
 	}
 }

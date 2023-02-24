@@ -2,6 +2,7 @@ import { Box, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
 import { YoutubeAPI } from '../../../Assets/YoutubeAPI';
+import {Video} from '../../';
 import "./Trending.css"
 const Trending = () => {
   const [trendingVideos, setTrendingVideos] = useState([]);
@@ -15,23 +16,24 @@ const Trending = () => {
     "NOW", "MUSIC", "GAMMING", "MOVIES"
   ]
 
+
   return (
     <Box sx={{ width: "100%", height: "100%", padding:"5px" }}>
 
       <Box sx={{
         width: "100%",
-        height: "50px",
+        height: "100px",
         display: "flex",
         flexDirection: "row",
         alignItems: "center"
       }}>
         <Box component="img" src='https://www.youtube.com/img/trending/avatar/trending.png' sx={{
-          width: "30px",
-          height: "30px",
-          borderRadius: "25px",
-          marginRight:"10px"
+          width: "70px",
+          height: "70px",
+          borderRadius: "50%",
+          marginRight:"15px"
         }} />
-        <Typography component="h2" variant='h2' sx={{ fontSize: "1em" }}>Trending</Typography>
+        <Typography component="h2" variant='h2' sx={{ fontSize: "2em" }}>Trending</Typography>
       </Box>
 
       <Box sx={{
@@ -50,6 +52,10 @@ const Trending = () => {
             </NavLink>
           ))
         }
+      </Box>
+
+      <Box>
+        <Video videos={trendingVideos}/>
       </Box>
     </Box>
   )

@@ -21,7 +21,7 @@ const CollapsSideNav = ({ collapsNavData, currentTab, setCurrentTab }) => {
     flexWrap: "nowrap",
     gap: {
       xs: "0",
-      sm: "10px",
+      sm: "5px",
     },
     padding: {
       xs: "5px",
@@ -80,7 +80,10 @@ const CollapsSideNav = ({ collapsNavData, currentTab, setCurrentTab }) => {
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
-              justifyContent: "center"
+              justifyContent:{
+                xs:"center",
+                sm:"flex-start"
+              } 
             }}>
 
               {collapsNavDataElement.name === currentTab ? <collapsNavDataElement.active_icon className="collapsNavLinksIcon" /> : <collapsNavDataElement.icon className="collapsNavLinksIcon" />}

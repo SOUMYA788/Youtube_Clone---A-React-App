@@ -67,8 +67,8 @@ const Search = () => {
                       if (key === "features") {
                         setFeatureFilter((prev) => {
                           if (featureFilter.includes(filterItem)) {
-                            return (prev.filter((prevItem) => {
-                              if (prevItem != filterItem) {
+                            return (prev.map((prevItem) => {
+                              if (prevItem !== filterItem) {
                                 return (prevItem)
                               }
                             }))
