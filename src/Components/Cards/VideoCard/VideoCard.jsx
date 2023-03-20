@@ -20,13 +20,10 @@ const VideoCard = ({ videoInfo }) => {
             {videoInfo.title.slice(0, 30)}...
           </Typography>
         </Link>
-
         <Box>
           <Link className='videoCard_videoChannelLink' to={`/channel/${videoInfo.channelId}`}>
-
             <Box sx={{ marginRight: "10px" }}>
               {videoInfo?.channelThumbnail && <Box component="img" variant='img' src={videoInfo?.channelThumbnail[0]?.url} alt={videoInfo.title} sx={{ width: "30px", height: "30px", borderRadius: "25px" }} />}
-
               {videoInfo?.authorThumbnail && <Box component="img" variant='img' src={videoInfo?.authorThumbnail[0]?.url} alt={videoInfo.title} sx={{ width: "30px", height: "30px", borderRadius: "25px" }} />}
             </Box>
             <Box>
@@ -39,9 +36,7 @@ const VideoCard = ({ videoInfo }) => {
             </Box>
           </Link>
         </Box>
-
       </Box>
-
     </Box>
   )
 }
