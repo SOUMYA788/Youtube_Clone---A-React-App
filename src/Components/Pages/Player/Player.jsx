@@ -7,7 +7,7 @@ import { YoutubeAPI } from '../../../Assets/YoutubeAPI';
 
 import "./Player.css"
 
-const Player = () => {
+export const Player = () => {
 
     const [playerVideos, setPlayerVideos] = useState([]);
     const [relatedVideos, setRelatedVideos] = useState([]);
@@ -96,5 +96,3 @@ const Player = () => {
         </Box>
     )
 }
-
-export default Player

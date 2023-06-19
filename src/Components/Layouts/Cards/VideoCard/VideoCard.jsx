@@ -3,7 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import "./VideoCard.css"
 
-const VideoCard = ({ videoInfo }) => {
+export const VideoCard = ({ videoInfo }) => {
   return (
     <Box id="videoCard_mainContainer" sx={{ width: "100%", height: "100%", position: "relative" }} title={videoInfo.title}>
 
@@ -40,5 +40,3 @@ const VideoCard = ({ videoInfo }) => {
     </Box>
   )
 }
-
-export default VideoCard

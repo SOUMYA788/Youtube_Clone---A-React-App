@@ -5,7 +5,7 @@ import { YoutubeAPI } from '../../../Assets/YoutubeAPI'
 import { ChannelCard, VideoCard } from '../../'
 import "./Channel.css"
 
-const Channel = () => {
+export const Channel = () => {
   const [channelVideos, setChannelVideos] = useState([])
   const [channelData, setChannelData] = useState(null);
   const { channelId } = useParams()
@@ -82,5 +82,3 @@ const Channel = () => {
   )
 
 }
-
-export default Channel

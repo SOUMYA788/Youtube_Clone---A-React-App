@@ -7,7 +7,7 @@ import { Box } from '@mui/system';
 import { Typography } from '@mui/material';
 import { Tune } from '@mui/icons-material';
 
-const Search = () => {
+export const Search = () => {
   const [searchVideos, setSearchVideos] = useState([]);
   const [filterStates, setFilterStates] = useState({
     type: "video",
@@ -184,4 +184,3 @@ const Search = () => {
   )
 }
 
-export default Search

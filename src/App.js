@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import { Box } from '@mui/material';
+
 import { HomeOutlined, HomeRounded, SubscriptionsOutlined, Subscriptions, VideoLibraryOutlined, VideoLibrary, Restore, RestoreOutlined, SlideshowRounded, AccessTimeOutlined, AccountCircleRounded, WhatshotOutlined, WhatshotRounded, MusicNote, MusicNoteOutlined, } from '@mui/icons-material';
 
 import { CreatorStudioIcon, FashionAndBuityIcon, FashionAndBuityIcon_Active, FeedbackIcon, GamingIcon, GamingIcon_Active, HelpIcon, HotspotIcon, HotspotIcon_Active, LearningIcon, LearningIcon_Active, MoviesIcon, MoviesIcon_Active, NewsIcon, NewsIcon_Active, ReportFlagIcon, SettingsIcon, ShortsIcon, ShortsIcon_Active, SportsIcon, SportsIcon_Active, YoutubeIcon, YoutubeKidsIcon, YoutubeMusicIcon, YoutubeTvIcon, } from './Assets/Icons';
 
-import { TopNav, Home, Search, Channel, Player, Trending, CollapsSideNav, SideNav } from './Components';
+import { TopNav, Home, Search, Channel, Player, Trending, CollapsSideNav, SideNav, SignIn } from './Components';
 
 import "./App.css";
 
@@ -243,6 +244,7 @@ function App() {
             <SideNav sideNavData={navData.sideNavData} />
             <Routes>
               <Route path='/' element={<Home currentTab={currentTab} />} />
+              <Route path='/signin' element={<SignIn/>} />
               <Route path='/search/:searchId' element={<Search />} />
               <Route path='/video/:videoId' element={<Player />} />
               <Route path='/channel/:channelId' element={<Channel />} />

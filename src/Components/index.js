@@ -1,11 +1,12 @@
-export {default as TopNav} from "./TopNav/TopNav";
-export {default as CollapsSideNav} from "./CollapsSideNav/CollapsSideNav";
-export {default as SideNav} from "./SideNav/SideNav";
-export {default as Channel} from "./Pages/Channel/Channel";
-export {default as Home} from "./Pages/Home";
-export {default as Search} from "./Pages/Search";
-export {default as Trending} from "./Pages/Trending/Trending";
-export {default as Video} from "./Video/Video"
-export {default as VideoCard} from "./Cards/VideoCard/VideoCard"
-export {default as ChannelCard} from "./Cards/ChannelCard/ChannelCard"
-export {default as Player} from "./Pages/Player/Player"
+export {SignIn} from "./Layouts/SignIn";
+export {TopNav} from "./Layouts/TopNav/TopNav";
+export {CollapsSideNav} from "./Layouts/CollapsSideNav/CollapsSideNav";
+export {SideNav} from "./Layouts/SideNav/SideNav";
+export {Channel} from "./Pages/Channel/Channel";
+export {Home} from "./Pages/Home";
+export {Search} from "./Pages/Search";
+export {Trending} from "./Pages/Trending/Trending";
+export {Video} from "./Layouts/Video/Video"
+export {VideoCard} from "./Layouts/Cards/VideoCard/VideoCard"
+export {ChannelCard} from "./Layouts/Cards/ChannelCard/ChannelCard"
+export {Player} from "./Pages/Player/Player"

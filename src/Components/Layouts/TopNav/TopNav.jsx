@@ -3,9 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material'
 import { Menu, Search, YouTube, AccountCircle, Mic, KeyboardBackspaceRounded } from '@mui/icons-material';
 import "./TopNav.css"
-import { NotificationIcon, VideoCallIcon } from '../../Assets/Icons';
+import { NotificationIcon, VideoCallIcon } from '../../../Assets/Icons';
 
-const TopNav = () => {
+export const TopNav = () => {
 
   const [searchValue, setSearchValue] = useState("")
   const navigate = useNavigate();
@@ -177,5 +177,3 @@ const TopNav = () => {
     </Box>
   )
 }
-
-export default TopNav

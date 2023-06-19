@@ -2,7 +2,8 @@ import { Box, Typography } from '@mui/material'
 import React from 'react'
 import { NavLink } from 'react-router-dom';
 import "./CollapsSideNav.css"
-const CollapsSideNav = ({ collapsNavData, currentTab, setCurrentTab }) => {
+
+export const CollapsSideNav = ({ collapsNavData, currentTab, setCurrentTab }) => {
 
   const sideNavContainerStyle = {
     height: {
@@ -102,5 +103,3 @@ const CollapsSideNav = ({ collapsNavData, currentTab, setCurrentTab }) => {
     </Box>
   )
 }
-
-export default CollapsSideNav 

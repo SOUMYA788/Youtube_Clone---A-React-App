@@ -4,7 +4,7 @@ import { Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
 import "./SideNav.css"
 
-const SideNav = ({ sideNavData, currentTab, setCurrentTab }) => {
+export const SideNav = ({ sideNavData, currentTab, setCurrentTab }) => {
 	return (
 		<Box sx={{
 			width: "70px",
@@ -30,5 +30,3 @@ const SideNav = ({ sideNavData, currentTab, setCurrentTab }) => {
 		</Box>
 	)
 }
-
-export default SideNav

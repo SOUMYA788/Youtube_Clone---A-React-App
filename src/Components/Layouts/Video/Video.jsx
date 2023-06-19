@@ -1,8 +1,8 @@
 import React from 'react'
 import { Box } from '@mui/system';
-import { VideoCard, ChannelCard } from '../';
+import { VideoCard, ChannelCard } from '../../';
 
-const Video = ({ videos, videoDirection }) => {
+export const Video = ({ videos, videoDirection }) => {
     if (!videos?.length) return "Loading...";
     console.log(videos)
 
@@ -51,4 +51,3 @@ const Video = ({ videos, videoDirection }) => {
     )
 }
 
-export default Video

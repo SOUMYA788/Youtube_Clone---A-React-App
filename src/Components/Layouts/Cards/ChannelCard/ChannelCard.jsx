@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material'
 
 import "./ChannelCard.css"
 
-const ChannelCard = ({ channelCardInfo, channelCardDirection, channelCardLogoSize }) => {
+export const ChannelCard = ({ channelCardInfo, channelCardDirection, channelCardLogoSize }) => {
 
   const { channelId } = useParams();
 
@@ -102,5 +102,3 @@ const ChannelCard = ({ channelCardInfo, channelCardDirection, channelCardLogoSiz
     </Box >
   )
 }
-
-export default ChannelCard

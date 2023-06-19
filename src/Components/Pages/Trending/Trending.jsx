@@ -4,7 +4,7 @@ import { NavLink, useParams } from 'react-router-dom'
 import { YoutubeAPI } from '../../../Assets/YoutubeAPI';
 import {Video} from '../../';
 import "./Trending.css"
-const Trending = () => {
+export const Trending = () => {
   const [trendingVideos, setTrendingVideos] = useState([]);
   const { trendingId } = useParams();
 
@@ -60,5 +60,3 @@ const Trending = () => {
     </Box>
   )
 }
-
-export default Trending
