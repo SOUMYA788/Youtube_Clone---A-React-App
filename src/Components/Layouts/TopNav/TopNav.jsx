@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
-import { Box, Typography } from '@mui/material'
+import { useNavigate } from 'react-router-dom';
+import { Box, Typography, Link } from '@mui/material'
 import { Menu, Search, YouTube, AccountCircle, Mic, KeyboardBackspaceRounded } from '@mui/icons-material';
 import "./TopNav.css"
 import { NotificationIcon, VideoCallIcon } from '../../../Assets/Icons';
+import { useFirebaseAuthContext } from '../../../Context/FirebaseContext';
 
 export const TopNav = () => {
+  const { currentUser, signUp } = useFirebaseAuthContext()
 
   const [searchValue, setSearchValue] = useState("")
   const navigate = useNavigate();
@@ -106,7 +108,7 @@ export const TopNav = () => {
             document.getElementById("collapsSideNavMainContainer").classList.toggle("hideCollapsNav")
           }} />
 
-        <Link className="homeLink" to='/'>
+        <Link className="homeLink" href='/' underline="none" variant='body1' color="black">
           <YouTube sx={youtubeLogoStyle} />
           <Typography variant='p' component="p">YouTube</Typography>
         </Link>
@@ -170,8 +172,14 @@ export const TopNav = () => {
 
         <VideoCallIcon className="topNavLeftIcons" />
         <NotificationIcon className="topNavLeftIcons" />
-        <AccountCircle sx={{ margin: "0 10px", cursor: "pointer", width: "30px", height: "30px", color: "red" }} />
-
+        {
+          currentUser ?
+            <AccountCircle sx={{ margin: "0 10px", cursor: "pointer", width: "30px", height: "30px", color: "red" }} /> :
+            <Link href="/signin" underline="none" variant='body1' color="black" sx={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"center", gap:"5px"}}>
+              <AccountCircle sx={{ margin: "0 10px", cursor: "pointer", width: "30px", height: "30px", color: "red" }} />
+              <Typography component="p" variant='p'>Sign In</Typography>
+            </Link>
+        }
       </Box>
 
     </Box>

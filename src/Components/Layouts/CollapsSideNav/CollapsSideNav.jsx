@@ -43,7 +43,8 @@ export const CollapsSideNav = ({ collapsNavData, currentTab, setCurrentTab }) =>
     },
     left: "0",
     top: "0",
-    background: "white"
+    background: "white",
+    zIndex: 100,
   }
 
   const setLink = (link) => {
@@ -81,10 +82,10 @@ export const CollapsSideNav = ({ collapsNavData, currentTab, setCurrentTab }) =>
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
-              justifyContent:{
-                xs:"center",
-                sm:"flex-start"
-              } 
+              justifyContent: {
+                xs: "center",
+                sm: "flex-start"
+              }
             }}>
 
               {collapsNavDataElement.name === currentTab ? <collapsNavDataElement.active_icon className="collapsNavLinksIcon" /> : <collapsNavDataElement.icon className="collapsNavLinksIcon" />}

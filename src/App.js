@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import { Box } from '@mui/material';
-
 import { HomeOutlined, HomeRounded, SubscriptionsOutlined, Subscriptions, VideoLibraryOutlined, VideoLibrary, Restore, RestoreOutlined, SlideshowRounded, AccessTimeOutlined, AccountCircleRounded, WhatshotOutlined, WhatshotRounded, MusicNote, MusicNoteOutlined, } from '@mui/icons-material';
 
 import { CreatorStudioIcon, FashionAndBuityIcon, FashionAndBuityIcon_Active, FeedbackIcon, GamingIcon, GamingIcon_Active, HelpIcon, HotspotIcon, HotspotIcon_Active, LearningIcon, LearningIcon_Active, MoviesIcon, MoviesIcon_Active, NewsIcon, NewsIcon_Active, ReportFlagIcon, SettingsIcon, ShortsIcon, ShortsIcon_Active, SportsIcon, SportsIcon_Active, YoutubeIcon, YoutubeKidsIcon, YoutubeMusicIcon, YoutubeTvIcon, } from './Assets/Icons';
@@ -12,17 +11,16 @@ import { TopNav, Home, Search, Channel, Player, Trending, CollapsSideNav, SideNa
 import "./App.css";
 
 function App() {
-
   const [currentTab, setCurrentTab] = useState("home")
 
   const appContentContainerDivStyle = {
     height: "calc(100vh - 50px)",
     width: "100%",
     display: "flex",
-    flexDirection:{
-      xs:"column",
-      sm:"row",
-    }, 
+    flexDirection: {
+      xs: "column",
+      sm: "row",
+    },
     position: "relative"
   }
 
@@ -230,7 +228,7 @@ function App() {
 
   return (
     <Router>
-      <div id="app_mainContainerDiv" onClick={(e) => {  e.stopPropagation(); handleNavBtn()}} >
+      <div id="app_mainContainerDiv" onClick={(e) => { e.stopPropagation(); handleNavBtn() }} >
         <Box sx={{
           height: "50px",
           width: "100%",
@@ -239,12 +237,15 @@ function App() {
         </Box>
 
         <Box sx={appContentContainerDivStyle}>
-          <CollapsSideNav collapsNavData={navData.collapsNavData.explore} currentTab={currentTab} setCurrentTab={setCurrentTab} />
+          <CollapsSideNav
+            collapsNavData={navData.collapsNavData.explore}
+            currentTab={currentTab}
+            setCurrentTab={setCurrentTab} />
           <Box className="scrollDiv" sx={routerContainerDivStyle}>
             <SideNav sideNavData={navData.sideNavData} />
             <Routes>
               <Route path='/' element={<Home currentTab={currentTab} />} />
-              <Route path='/signin' element={<SignIn/>} />
+              <Route path='/signin' element={<SignIn />} />
               <Route path='/search/:searchId' element={<Search />} />
               <Route path='/video/:videoId' element={<Player />} />
               <Route path='/channel/:channelId' element={<Channel />} />
