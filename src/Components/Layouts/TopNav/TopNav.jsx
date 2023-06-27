@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { useNavigate, Link as ReactLink } from 'react-router-dom';
 import { Box, Typography, Link } from '@mui/material'
 import { Menu, Search, YouTube, AccountCircle, Mic, KeyboardBackspaceRounded } from '@mui/icons-material';
 import "./TopNav.css"
 import { NotificationIcon, VideoCallIcon } from '../../../Assets/Icons';
 import { useFirebaseAuthContext } from '../../../Context/FirebaseContext';
 
-export const TopNav = () => {
-  const { currentUser, signUp } = useFirebaseAuthContext()
+export const TopNav = ({ showDashboard, setShowDashboard }) => {
+  const { currentUser } = useFirebaseAuthContext()
 
   const [searchValue, setSearchValue] = useState("")
   const navigate = useNavigate();
@@ -97,6 +97,12 @@ export const TopNav = () => {
     setSearchValue("")
   }
 
+  const handleDashboardClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowDashboard(!showDashboard)
+  }
+
   return (
     <Box sx={topNavMainContainer}>
 
@@ -108,7 +114,7 @@ export const TopNav = () => {
             document.getElementById("collapsSideNavMainContainer").classList.toggle("hideCollapsNav")
           }} />
 
-        <Link className="homeLink" href='/' underline="none" variant='body1' color="black">
+        <Link component={ReactLink} className="homeLink" to='/' underline="none" variant='body1' color="black">
           <YouTube sx={youtubeLogoStyle} />
           <Typography variant='p' component="p">YouTube</Typography>
         </Link>
@@ -174,10 +180,17 @@ export const TopNav = () => {
         <NotificationIcon className="topNavLeftIcons" />
         {
           currentUser ?
-            <AccountCircle sx={{ margin: "0 10px", cursor: "pointer", width: "30px", height: "30px", color: "red" }} /> :
-            <Link href="/signin" underline="none" variant='body1' color="black" sx={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"center", gap:"5px"}}>
-              <AccountCircle sx={{ margin: "0 10px", cursor: "pointer", width: "30px", height: "30px", color: "red" }} />
-              <Typography component="p" variant='p'>Sign In</Typography>
+            <Box onClick={handleDashboardClick} sx={{ margin: "0 10px" }}>
+              <AccountCircle sx={{ cursor: "pointer", width: "30px", height: "30px", color: "red" }} />
+            </Box> :
+            <Link component={ReactLink} underline="none" variant='body1' color="black" to="/signin" sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+              <AccountCircle
+                sx={{ margin: "0 10px", cursor: "pointer", width: "30px", height: "30px", color: "red" }} />
+              <Typography
+                component="p"
+                variant='p'>
+                Sign In
+              </Typography>
             </Link>
         }
       </Box>

@@ -1,4 +1,5 @@
 export {SignIn} from "./Layouts/SignIn";
+export {DashBoard} from "./Pages/DashBoard"
 export {TopNav} from "./Layouts/TopNav/TopNav";
 export {CollapsSideNav} from "./Layouts/CollapsSideNav/CollapsSideNav";
 export {SideNav} from "./Layouts/SideNav/SideNav";

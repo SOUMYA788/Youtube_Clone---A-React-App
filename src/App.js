@@ -1,17 +1,20 @@
-import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-import { Box } from '@mui/material';
-import { HomeOutlined, HomeRounded, SubscriptionsOutlined, Subscriptions, VideoLibraryOutlined, VideoLibrary, Restore, RestoreOutlined, SlideshowRounded, AccessTimeOutlined, AccountCircleRounded, WhatshotOutlined, WhatshotRounded, MusicNote, MusicNoteOutlined, } from '@mui/icons-material';
+import { useRef, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link as ReactLink } from 'react-router-dom';
+import { Box, Link, Typography } from '@mui/material';
+import { HomeOutlined, HomeRounded, SubscriptionsOutlined, Subscriptions, VideoLibraryOutlined, VideoLibrary, Restore, RestoreOutlined, SlideshowRounded, AccessTimeOutlined, AccountCircleRounded, WhatshotOutlined, WhatshotRounded, MusicNote, MusicNoteOutlined, AccountCircle, Logout } from '@mui/icons-material';
 
 import { CreatorStudioIcon, FashionAndBuityIcon, FashionAndBuityIcon_Active, FeedbackIcon, GamingIcon, GamingIcon_Active, HelpIcon, HotspotIcon, HotspotIcon_Active, LearningIcon, LearningIcon_Active, MoviesIcon, MoviesIcon_Active, NewsIcon, NewsIcon_Active, ReportFlagIcon, SettingsIcon, ShortsIcon, ShortsIcon_Active, SportsIcon, SportsIcon_Active, YoutubeIcon, YoutubeKidsIcon, YoutubeMusicIcon, YoutubeTvIcon, } from './Assets/Icons';
 
-import { TopNav, Home, Search, Channel, Player, Trending, CollapsSideNav, SideNav, SignIn } from './Components';
+import { TopNav, Home, Search, Channel, Player, Trending, CollapsSideNav, SideNav, SignIn, DashBoard } from './Components';
 
 import "./App.css";
+import { useFirebaseAuthContext } from './Context/FirebaseContext';
 
 function App() {
+  const {currentUser} = useFirebaseAuthContext();
   const [currentTab, setCurrentTab] = useState("home")
+  const [showDashboard, setShowDashboard] = useState(false);
+  const dashboardContainerRef = useRef();
 
   const appContentContainerDivStyle = {
     height: "calc(100vh - 50px)",
@@ -224,16 +227,42 @@ function App() {
     if (!document.getElementById("collapsSideNavMainContainer").classList.contains("hideCollapsNav")) {
       document.getElementById("collapsSideNavMainContainer").classList.add("hideCollapsNav")
     }
+
+    if(showDashboard){
+      setShowDashboard(false)
+    }
   }
 
   return (
     <Router>
-      <div id="app_mainContainerDiv" onClick={(e) => { e.stopPropagation(); handleNavBtn() }} >
+      <Box id="app_mainContainerDiv" sx={{ position: "relative", width: "100%", height: "100dvh" }} onClick={(e) => { handleNavBtn() }} >
+        {
+          showDashboard && <Box ref={dashboardContainerRef} sx={{ background: "red", position: "absolute", top: "50px", right: `${showDashboard ? "5px" : "-160px"}`, width: "150px", padding: "10px", display: `${showDashboard ? "flex" : "none"}`, flexDirection: "column", gap: "5px", zIndex: "101", transition: "2s ease" }}>
+            <Link component={ReactLink} underline="none" variant='body1' color="black" to="/dashboard" sx={{ display: "flex", flexDirection: "row", gap: "10px", alignItems: "center" }}>
+              <AccountCircle
+                sx={{ width: "30px", height: "30px", color: "white" }} />
+              <Typography component="p" variant='p'>
+                {currentUser.email.split("@")[0]}
+              </Typography>
+            </Link>
+
+            {/* Horizontal Line */}
+            <Box sx={{ width: "100%", height: "1px", background: "rgba(0,0,0,0.5)", margin: "5px 0" }} />
+
+            <Box sx={{display:"flex", flexDirection:"row", alignItems:"center", gap:"10px", cursor:"pointer"}}>
+              <Logout sx={{ color: "white" }}/>
+              <Typography component="p" variant='p' sx={{ padding: "3px 1px" }}>
+                Log Out
+              </Typography>
+            </Box>
+          </Box>
+        }
+
         <Box sx={{
           height: "50px",
           width: "100%",
         }}>
-          <TopNav />
+          <TopNav showDashboard={showDashboard} setShowDashboard={setShowDashboard} />
         </Box>
 
         <Box sx={appContentContainerDivStyle}>
@@ -246,6 +275,7 @@ function App() {
             <Routes>
               <Route path='/' element={<Home currentTab={currentTab} />} />
               <Route path='/signin' element={<SignIn />} />
+              <Route path='/dashboard' element={<DashBoard/>} />
               <Route path='/search/:searchId' element={<Search />} />
               <Route path='/video/:videoId' element={<Player />} />
               <Route path='/channel/:channelId' element={<Channel />} />
@@ -253,7 +283,7 @@ function App() {
             </Routes>
           </Box>
         </Box>
-      </div>
+      </Box>
     </Router>
   );
 }

@@ -1,17 +1,55 @@
 import { Lock } from "@mui/icons-material";
 import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
-import React from "react";
-import { MuiInputOutlined, customTheme, outerTheme } from "./MuiInput";
-import { ThemeProvider, useTheme } from '@mui/material/styles';
-
+import React, { useState } from "react";
+import { customTheme } from "./MuiInput";
+import { ThemeProvider, useTheme } from '@mui/material/styles'; 
+import { useFirebaseAuthContext } from "../../Context/FirebaseContext";
 
 export const SignIn = () => {
+  const { signUp } = useFirebaseAuthContext()
+  
+  const [signinInfo, setSigninInfo] = useState({
+    userEmail: "",
+    userPassword: "",
+    reCheckUserPassword: "",
+    signInError:""
+  })
+
+  const [signInUILoading, setSignInUILoading] = useState(false)
 
   const outerTheme = useTheme();
 
-  const handleSignIn = (e) => {
-    e.preventDefault();
+  // a function used to set an error for sign in problems...
+  const setSignInError = (errorInfo) => {
+    setSigninInfo({
+      ...signinInfo,
+      signInError:errorInfo 
+    }) 
   }
+
+  // function responsible to submit sign in form and create a new user...
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    const {userEmail, userPassword, reCheckUserPassword} = signinInfo
+
+    // Checkout for same password
+    if (userPassword !== reCheckUserPassword) {
+      setSignInError("checkout all credentials")
+    }
+
+    // trying to signup
+    try {
+      setSignInUILoading(true)
+      setSignInError("")
+      await signUp(userEmail, userPassword)
+    } catch (error) {
+      setSignInError("Faild to create an account")
+      console.log(error)
+    }
+
+    setSignInUILoading(false)
+  }
+
   return (
     <Box
       sx={{
@@ -27,7 +65,7 @@ export const SignIn = () => {
         alignItems: "center",
       }}>
       <Avatar sx={{
-        bgcolor: "red"
+        bgcolor: signinInfo.signInError!=="" ? "red" : "green"
       }}>
         <Lock />
       </Avatar>
@@ -38,23 +76,39 @@ export const SignIn = () => {
           margin: "5px 0 0",
           fontSize: "1rem"
         }}>
-        SIGN IN
+        {signinInfo.signInError!=="" ? signinInfo.signInError : "SIGN IN"}
       </Typography>
+
       <Box component="form" onSubmit={handleSignIn} sx={{
         width: "100%"
       }}>
 
         <ThemeProvider theme={customTheme(outerTheme, null, null, "red")}>
-          <TextField margin="normal" required fullWidth label="Email ID" type="email" id="userEmail" autoComplete="email" />
-          <TextField margin="normal" required fullWidth label="Password" type="password" id="userPassword" autoComplete="current-password" />
-          <TextField margin="normal" required fullWidth label="Re Enter Password" type="password" id="reCheckPassword" autoComplete="current-password" />
+          <TextField margin="normal" required fullWidth label="Email ID" type="email" id="userEmail" autoComplete="email"  value={signinInfo.userEmail} onChange={(e) => {
+            setSigninInfo({
+              ...signinInfo,
+              userEmail:e.target.value
+            })
+          }} />
+          <TextField margin="normal" required fullWidth label="Password" type="password" id="userPassword" autoComplete="current-password" value={signinInfo.userPassword} onChange={(e) => {
+            setSigninInfo({
+              ...signinInfo,
+              userPassword:e.target.value
+            })
+          }}/>
+          <TextField margin="normal" required fullWidth label="Re Enter Password" type="password" id="reCheckPassword" autoComplete="current-password" value={signinInfo.reCheckUserPassword} onChange={(e) => {
+            setSigninInfo({
+              ...signinInfo,
+              reCheckUserPassword:e.target.value
+            })
+          }}/>
         </ThemeProvider>
 
-        <Button type="submit" fullWidth variant="contained" sx={{
+        <Button disabled={signInUILoading} type="submit" fullWidth variant="contained" sx={{
           backgroundColor: "rgb(230 0 0)",
-          marginTop:"15px",
-          ":hover":{
-            backgroundColor:"rgb(255 0 0)"
+          marginTop: "15px",
+          ":hover": {
+            backgroundColor: "rgb(255 0 0)"
           }
         }}>SIGN IN</Button>
 
