@@ -3,7 +3,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom';
 import "./CollapsSideNav.css"
 
-export const CollapsSideNav = ({ collapsNavData, currentTab, setCurrentTab }) => {
+export const CollapsSideNav = ({ collapsNavData, currentTab, setCurrentTab, showSideNav, setShowSideNav }) => {
 
   const sideNavContainerStyle = {
     height: {
@@ -57,7 +57,7 @@ export const CollapsSideNav = ({ collapsNavData, currentTab, setCurrentTab }) =>
     }
   }
   return (
-    <Box id="collapsSideNavMainContainer" sx={sideNavContainerStyle} className="hideCollapsNav scrollDiv">
+    <Box id="collapsSideNavMainContainer" sx={sideNavContainerStyle} className={`${showSideNav ? "scrollDiv" : "hideCollapsNav scrollDiv"}`}>
       {
         collapsNavData.map((collapsNavDataElement, indx) => (
 
@@ -67,9 +67,7 @@ export const CollapsSideNav = ({ collapsNavData, currentTab, setCurrentTab }) =>
             key={`${collapsNavDataElement.name}_${indx}`}
             onClick={() => {
               setCurrentTab(collapsNavDataElement.name)
-              if (!document.getElementById("collapsSideNavMainContainer").classList.contains("hideCollapsNav")) {
-                document.getElementById("collapsSideNavMainContainer").classList.add("hideCollapsNav")
-              }
+              if (showSideNav) { setShowSideNav(false) }
             }}>
 
             <Box sx={{

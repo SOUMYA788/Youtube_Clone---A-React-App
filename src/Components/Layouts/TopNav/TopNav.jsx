@@ -6,9 +6,8 @@ import "./TopNav.css"
 import { NotificationIcon, VideoCallIcon } from '../../../Assets/Icons';
 import { useFirebaseAuthContext } from '../../../Context/FirebaseContext';
 
-export const TopNav = ({ showDashboard, setShowDashboard }) => {
+export const TopNav = ({ showSideNav, setShowSideNav, showDashboard, setShowDashboard }) => {
   const { currentUser } = useFirebaseAuthContext()
-
   const [searchValue, setSearchValue] = useState("")
   const navigate = useNavigate();
 
@@ -97,23 +96,10 @@ export const TopNav = ({ showDashboard, setShowDashboard }) => {
     setSearchValue("")
   }
 
-  const handleDashboardClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setShowDashboard(!showDashboard)
-  }
-
   return (
     <Box sx={topNavMainContainer}>
-
       <Box component="div" sx={topNavElements}>
-        <Menu
-          sx={navToggleBtnStyle}
-          onClick={(e) => {
-            e.stopPropagation()
-            document.getElementById("collapsSideNavMainContainer").classList.toggle("hideCollapsNav")
-          }} />
-
+        <Menu sx={navToggleBtnStyle} onClick={() => setShowSideNav(!showSideNav)} />
         <Link component={ReactLink} className="homeLink" to='/' underline="none" variant='body1' color="black">
           <YouTube sx={youtubeLogoStyle} />
           <Typography variant='p' component="p">YouTube</Typography>
@@ -121,23 +107,18 @@ export const TopNav = ({ showDashboard, setShowDashboard }) => {
       </Box>
 
       <div id='topNavSearchDiv' className='navBoxShowHide'>
-        <KeyboardBackspaceRounded
-          id="search_BackIcon"
-          focusable="true"
-          tabIndex="1"
-          sx={{
-            display: {
-              xs: "inline-block",
-              sm: "none"
-            },
-            ...iconStyle,
-            marginRight: "5px"
-          }}
+        <KeyboardBackspaceRounded id="search_BackIcon" focusable="true" tabIndex="1" sx={{
+          display: {
+            xs: "inline-block",
+            sm: "none"
+          },
+          ...iconStyle,
+          marginRight: "5px"
+        }}
           onFocus={() => {
             document.getElementById("topNavSearchDiv").classList.remove("fullSearchBar")
           }}
         />
-
         <form className='searchForm' onSubmit={searchSubmit}>
           <input type="text" placeholder='Search' className='topNavSearchBar' value={searchValue} onChange={(e) => {
             setSearchValue(e.target.value)
@@ -151,7 +132,6 @@ export const TopNav = ({ showDashboard, setShowDashboard }) => {
       </div>
 
       <Box sx={flexRowCenter}>
-
         <Search
           focusable="true"
           tabIndex="1"
@@ -175,17 +155,15 @@ export const TopNav = ({ showDashboard, setShowDashboard }) => {
             }
           }}
         />
-
         <VideoCallIcon className="topNavLeftIcons" />
         <NotificationIcon className="topNavLeftIcons" />
         {
           currentUser ?
-            <Box onClick={handleDashboardClick} sx={{ margin: "0 10px" }}>
+            <Box onClick={() => setShowDashboard(!showDashboard)} sx={{ margin: "0 10px" }}>
               <AccountCircle sx={{ cursor: "pointer", width: "30px", height: "30px", color: "red" }} />
             </Box> :
             <Link component={ReactLink} underline="none" variant='body1' color="black" to="/signin" sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-              <AccountCircle
-                sx={{ margin: "0 10px", cursor: "pointer", width: "30px", height: "30px", color: "red" }} />
+              <AccountCircle sx={{ margin: "0 10px", cursor: "pointer", width: "30px", height: "30px", color: "red" }} />
               <Typography
                 component="p"
                 variant='p'>
@@ -194,7 +172,6 @@ export const TopNav = ({ showDashboard, setShowDashboard }) => {
             </Link>
         }
       </Box>
-
     </Box>
   )
 }

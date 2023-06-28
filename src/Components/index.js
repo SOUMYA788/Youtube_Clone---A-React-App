@@ -1,13 +1,17 @@
-export {SignIn} from "./Layouts/SignIn";
+// Pages
+export {SignIn} from "./Pages/SignIn";
 export {DashBoard} from "./Pages/DashBoard"
-export {TopNav} from "./Layouts/TopNav/TopNav";
-export {CollapsSideNav} from "./Layouts/CollapsSideNav/CollapsSideNav";
-export {SideNav} from "./Layouts/SideNav/SideNav";
 export {Channel} from "./Pages/Channel/Channel";
 export {Home} from "./Pages/Home";
 export {Search} from "./Pages/Search";
 export {Trending} from "./Pages/Trending/Trending";
+export {Player} from "./Pages/Player/Player"
+
+// Layouts
+export {TopNav} from "./Layouts/TopNav/TopNav";
+export {CollapsSideNav} from "./Layouts/CollapsSideNav/CollapsSideNav";
+export {SideNav} from "./Layouts/SideNav/SideNav";
 export {Video} from "./Layouts/Video/Video"
 export {VideoCard} from "./Layouts/Cards/VideoCard/VideoCard"
 export {ChannelCard} from "./Layouts/Cards/ChannelCard/ChannelCard"
-export {Player} from "./Pages/Player/Player"
+export {CustomAlert} from "./Layouts/CustomAlert"

@@ -1,7 +1,7 @@
 import { Lock } from "@mui/icons-material";
 import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { customTheme } from "./MuiInput";
+import { customTheme } from "../Layouts/MuiInput";
 import { ThemeProvider, useTheme } from '@mui/material/styles'; 
 import { useFirebaseAuthContext } from "../../Context/FirebaseContext";
 

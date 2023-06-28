@@ -4,7 +4,7 @@ import { outlinedInputClasses } from '@mui/material/OutlinedInput';
 import { createTheme } from '@mui/material/styles';
 
 export const customTheme = (outerTheme, borderColor, hoverColor, focusedColor) => {
-
+ 
     const defaultBorderColor = '#E0E3E7'
     const defaultBorderHoverColor = '#B2BAC2'
     const defaultBorderFocusedColor = '#6F7E8C'
