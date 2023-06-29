@@ -5,7 +5,7 @@ import { HomeOutlined, HomeRounded, SubscriptionsOutlined, Subscriptions, VideoL
 
 import { CreatorStudioIcon, FashionAndBuityIcon, FashionAndBuityIcon_Active, FeedbackIcon, GamingIcon, GamingIcon_Active, HelpIcon, HotspotIcon, HotspotIcon_Active, LearningIcon, LearningIcon_Active, MoviesIcon, MoviesIcon_Active, NewsIcon, NewsIcon_Active, ReportFlagIcon, SettingsIcon, ShortsIcon, ShortsIcon_Active, SportsIcon, SportsIcon_Active, YoutubeIcon, YoutubeKidsIcon, YoutubeMusicIcon, YoutubeTvIcon, } from './Assets/Icons';
 
-import { TopNav, Home, Search, Channel, Player, Trending, CollapsSideNav, SideNav, SignIn, DashBoard, CustomAlert } from './Components';
+import { TopNav, Home, Search, Channel, Player, Trending, CollapsSideNav, SideNav, SignIn, DashBoard, CustomAlert, Login, ForgetPassword } from './Components';
 
 import "./App.css";
 import { useFirebaseAuthContext } from './Context/FirebaseContext';
@@ -305,6 +305,8 @@ function App() {
             <Routes>
               <Route path='/' element={<Home currentTab={currentTab} />} />
               <Route path='/signin' element={<SignIn />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/forget-password' element={<ForgetPassword />} />
               <Route path='/dashboard' element={<DashBoard />} />
               <Route path='/search/:searchId' element={<Search />} />
               <Route path='/video/:videoId' element={<Player />} />

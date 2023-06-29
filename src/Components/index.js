@@ -1,5 +1,7 @@
 // Pages
 export {SignIn} from "./Pages/SignIn";
+export {Login} from "./Pages/Login"
+export {ForgetPassword} from "./Pages/ForgetPassword"
 export {DashBoard} from "./Pages/DashBoard"
 export {Channel} from "./Pages/Channel/Channel";
 export {Home} from "./Pages/Home";

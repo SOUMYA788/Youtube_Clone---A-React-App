@@ -1,18 +1,19 @@
 import { Lock } from "@mui/icons-material";
-import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Button, Link, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
+import { Link as ReactLink } from "react-router-dom";
 import { customTheme } from "../Layouts/MuiInput";
-import { ThemeProvider, useTheme } from '@mui/material/styles'; 
+import { ThemeProvider, useTheme } from '@mui/material/styles';
 import { useFirebaseAuthContext } from "../../Context/FirebaseContext";
 
 export const SignIn = () => {
   const { signUp } = useFirebaseAuthContext()
-  
+
   const [signinInfo, setSigninInfo] = useState({
     userEmail: "",
     userPassword: "",
     reCheckUserPassword: "",
-    signInError:""
+    signInError: ""
   })
 
   const [signInUILoading, setSignInUILoading] = useState(false)
@@ -23,14 +24,14 @@ export const SignIn = () => {
   const setSignInError = (errorInfo) => {
     setSigninInfo({
       ...signinInfo,
-      signInError:errorInfo 
-    }) 
+      signInError: errorInfo
+    })
   }
 
   // function responsible to submit sign in form and create a new user...
   const handleSignIn = async (e) => {
     e.preventDefault();
-    const {userEmail, userPassword, reCheckUserPassword} = signinInfo
+    const { userEmail, userPassword, reCheckUserPassword } = signinInfo
 
     // Checkout for same password
     if (userPassword !== reCheckUserPassword) {
@@ -65,7 +66,7 @@ export const SignIn = () => {
         alignItems: "center",
       }}>
       <Avatar sx={{
-        bgcolor: signinInfo.signInError!=="" ? "red" : "green"
+        bgcolor: signinInfo.signInError !== "" ? "red" : "green"
       }}>
         <Lock />
       </Avatar>
@@ -76,7 +77,7 @@ export const SignIn = () => {
           margin: "5px 0 0",
           fontSize: "1rem"
         }}>
-        {signinInfo.signInError!=="" ? signinInfo.signInError : "SIGN IN"}
+        {signinInfo.signInError !== "" ? signinInfo.signInError : "SIGN IN"}
       </Typography>
 
       <Box component="form" onSubmit={handleSignIn} sx={{
@@ -84,33 +85,29 @@ export const SignIn = () => {
       }}>
 
         <ThemeProvider theme={customTheme(outerTheme, null, null, "red")}>
-          <TextField margin="normal" required fullWidth label="Email ID" type="email" id="userEmail" autoComplete="email"  value={signinInfo.userEmail} onChange={(e) => {
+          <TextField margin="normal" required fullWidth label="Email ID" type="email" id="userEmail" autoComplete="email" value={signinInfo.userEmail} onChange={(e) => {
             setSigninInfo({
               ...signinInfo,
-              userEmail:e.target.value
+              userEmail: e.target.value
             })
           }} />
           <TextField margin="normal" required fullWidth label="Password" type="password" id="userPassword" autoComplete="current-password" value={signinInfo.userPassword} onChange={(e) => {
             setSigninInfo({
               ...signinInfo,
-              userPassword:e.target.value
+              userPassword: e.target.value
             })
-          }}/>
+          }} />
           <TextField margin="normal" required fullWidth label="Re Enter Password" type="password" id="reCheckPassword" autoComplete="current-password" value={signinInfo.reCheckUserPassword} onChange={(e) => {
             setSigninInfo({
               ...signinInfo,
-              reCheckUserPassword:e.target.value
+              reCheckUserPassword: e.target.value
             })
-          }}/>
+          }} />
         </ThemeProvider>
 
-        <Button disabled={signInUILoading} type="submit" fullWidth variant="contained" sx={{
-          backgroundColor: "rgb(230 0 0)",
-          marginTop: "15px",
-          ":hover": {
-            backgroundColor: "rgb(255 0 0)"
-          }
-        }}>SIGN IN</Button>
+        <Button disabled={signInUILoading} type="submit" fullWidth variant="contained" sx={{backgroundColor: "rgb(230 0 0)", marginTop: "15px", marginBottom:"10px", ":hover": { backgroundColor: "rgb(255 0 0)" }}}>SIGN IN</Button>
+
+          <Link component={ReactLink} to="/login" underline="hover" color="red" sx={{display:"block", textAlign:"right"}}>Already have an account? Login</Link>
 
       </Box>
     </Box>
