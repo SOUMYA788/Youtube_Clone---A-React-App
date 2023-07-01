@@ -1,7 +1,7 @@
 import { Lock } from "@mui/icons-material";
 import { Avatar, Box, Button, Link, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { Link as ReactLink } from "react-router-dom";
+import { Link as ReactLink, useNavigate } from "react-router-dom";
 import { customTheme } from "../Layouts/MuiInput";
 import { ThemeProvider, useTheme } from '@mui/material/styles';
 import { useFirebaseAuthContext } from "../../Context/FirebaseContext";
@@ -19,6 +19,7 @@ export const SignIn = () => {
   const [signInUILoading, setSignInUILoading] = useState(false)
 
   const outerTheme = useTheme();
+  const navigate = useNavigate()
 
   // a function used to set an error for sign in problems...
   const setSignInError = (errorInfo) => {
@@ -43,6 +44,7 @@ export const SignIn = () => {
       setSignInUILoading(true)
       setSignInError("")
       await signUp(userEmail, userPassword)
+      navigate("/")
     } catch (error) {
       setSignInError("Faild to create an account")
       console.log(error)
@@ -65,6 +67,7 @@ export const SignIn = () => {
         justifyContent: "center",
         alignItems: "center",
       }}>
+      
       <Avatar sx={{
         bgcolor: signinInfo.signInError !== "" ? "red" : "green"
       }}>

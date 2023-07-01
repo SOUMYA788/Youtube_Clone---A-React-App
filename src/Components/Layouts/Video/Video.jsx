@@ -3,8 +3,8 @@ import { Box } from '@mui/system';
 import { VideoCard, ChannelCard } from '../../';
 
 export const Video = ({ videos, videoDirection }) => {
+    
     if (!videos?.length) return "Loading...";
-    console.log(videos)
 
     const video_mainContainer = {
         width: "100%",

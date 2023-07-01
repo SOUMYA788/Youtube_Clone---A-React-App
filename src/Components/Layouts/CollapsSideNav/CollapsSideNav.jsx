@@ -2,8 +2,11 @@ import { Box, Typography } from '@mui/material'
 import React from 'react'
 import { NavLink } from 'react-router-dom';
 import "./CollapsSideNav.css"
+import { useAppContextData } from '../../../Context/AppContext';
 
-export const CollapsSideNav = ({ collapsNavData, currentTab, setCurrentTab, showSideNav, setShowSideNav }) => {
+export const CollapsSideNav = ({ collapsNavData }) => {
+
+  const [{ currentTab, showSideNav }, dispatch] = useAppContextData();
 
   const sideNavContainerStyle = {
     height: {
@@ -47,6 +50,20 @@ export const CollapsSideNav = ({ collapsNavData, currentTab, setCurrentTab, show
     zIndex: 100,
   }
 
+  const handleNavLinkClick = (currentTab, showSideNav) => {
+    dispatch({
+      type: "setCurrentTab",
+      currentTab
+    })
+
+    if (showSideNav) {
+      dispatch({
+        type: "setShowSideNav",
+        showSideNav
+      })
+    }
+  }
+
   const setLink = (link) => {
     if (link.toLowerCase() === "home") {
       return ("/")
@@ -65,10 +82,7 @@ export const CollapsSideNav = ({ collapsNavData, currentTab, setCurrentTab, show
             className={"collapsSideNavLink"}
             to={setLink(collapsNavDataElement.name)}
             key={`${collapsNavDataElement.name}_${indx}`}
-            onClick={() => {
-              setCurrentTab(collapsNavDataElement.name)
-              if (showSideNav) { setShowSideNav(false) }
-            }}>
+            onClick={() => handleNavLinkClick(collapsNavDataElement.name, false)}>
 
             <Box sx={{
               width: {

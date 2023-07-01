@@ -1,22 +1,16 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link as ReactLink } from 'react-router-dom';
-import { Box, Link, Typography } from '@mui/material';
+import { Box, Button, Link, Typography } from '@mui/material';
 import { HomeOutlined, HomeRounded, SubscriptionsOutlined, Subscriptions, VideoLibraryOutlined, VideoLibrary, Restore, RestoreOutlined, SlideshowRounded, AccessTimeOutlined, AccountCircleRounded, WhatshotOutlined, WhatshotRounded, MusicNote, MusicNoteOutlined, AccountCircle, Logout, LockResetRounded } from '@mui/icons-material';
-
 import { CreatorStudioIcon, FashionAndBuityIcon, FashionAndBuityIcon_Active, FeedbackIcon, GamingIcon, GamingIcon_Active, HelpIcon, HotspotIcon, HotspotIcon_Active, LearningIcon, LearningIcon_Active, MoviesIcon, MoviesIcon_Active, NewsIcon, NewsIcon_Active, ReportFlagIcon, SettingsIcon, ShortsIcon, ShortsIcon_Active, SportsIcon, SportsIcon_Active, YoutubeIcon, YoutubeKidsIcon, YoutubeMusicIcon, YoutubeTvIcon, } from './Assets/Icons';
-
 import { TopNav, Home, Search, Channel, Player, Trending, CollapsSideNav, SideNav, SignIn, DashBoard, CustomAlert, Login, ForgetPassword } from './Components';
-
-import "./App.css";
 import { useFirebaseAuthContext } from './Context/FirebaseContext';
+import { useAppContextData } from './Context/AppContext';
+import "./App.css";
 
 function App() {
-  const { currentUser, logOut } = useFirebaseAuthContext();
-  const [currentTab, setCurrentTab] = useState("home")
-  const [showSideNav, setShowSideNav] = useState(false);
-  const [showDashboard, setShowDashboard] = useState(false);
-  const [logOutError, setLogOutError] = useState(null);
-  const dashboardContainerRef = useRef();
+  const { currentUser, logOut, deleteUserId } = useFirebaseAuthContext();
+  const [{ showSideNav, showDashboard, logOutError, accountDeleteError, logoutProcessing, showAlert }, dispatch] = useAppContextData();
 
   const appContentContainerDivStyle = {
     height: "calc(100vh - 50px)",
@@ -225,32 +219,64 @@ function App() {
 
   }
 
+  const updateAppData = (dispatchType, dispatchKey, dispatchValue) => {
+    return dispatch({
+      type: dispatchType,
+      [dispatchKey]: dispatchValue
+    })
+  }
+
   const handleNavBtn = () => {
-    if (showSideNav) { setShowSideNav(false) }
-    if (showDashboard) { setShowDashboard(false) }
+    if (showSideNav) { updateAppData("setShowSideNav", "showSideNav", false) }
+    if (showDashboard) { updateAppData("setShowDashboard", "showDashboard", false) }
   }
 
   const handleLogout = async () => {
     try {
-      setLogOutError(null)
+      updateAppData("setLogOutError", "logOutError", null)
       await logOut()
     } catch (error) {
-      setLogOutError("faild to logout")
+      updateAppData("setLogOutError", "logOutError", "faild to logout")
     }
   }
 
+  const handleUserDelete = async (e) => {
+    e.preventDefault();
+    try {
+      updateAppData("setLogoutProcessing", "logoutProcessing", true)
+      updateAppData("setAccountDeleteError", "accountDeleteError", null)
+      if (currentUser) {
+        await deleteUserId(currentUser?.uid);
+      } else {
+        throw new Error("faild to delete account");
+      }
+    } catch (error) {
+      updateAppData("setAccountDeleteError", "accountDeleteError", "faild to delete your account")
+    }
+    updateAppData("setLogoutProcessing", "logoutProcessing", false)
+    updateAppData("setLogoutProcessing", "logoutProcessing", false)
+  }
+
+  const setErrorAlert = (error, alertType) => {
+    updateAppData("setShowAlert", "showAlert", true)
+    return (
+      <Box sx={{ width: "90%", position: "absolute", top: "10px", left: "5%", zIndex: "1", display: showAlert ? "block" : "none" }}>
+        <CustomAlert alertType={alertType} alertMessage={error} />
+      </Box>
+    )
+  }
 
 
   return (
     <Router>
       <Box id="app_mainContainerDiv" sx={{ position: "relative", width: "100%", height: "100dvh" }} onClick={handleNavBtn} >
+
+        {/* ALERTS */}
+        {logOutError && setErrorAlert(logOutError, "warn")}
+        {accountDeleteError && setErrorAlert(accountDeleteError, "warn")}
+
         {
-          logOutError && <Box sx={{width:"90%", position:"absolute", top:"0", left:"5%"}}>
-            <CustomAlert alertType="warn" alertMessage={logOutError} />
-          </Box>
-        }
-        {
-          showDashboard && <Box ref={dashboardContainerRef} sx={{ background: "white", position: "absolute", top: "50px", right: `${showDashboard ? "5px" : "-180px"}`, width: "170px", padding: "10px", display: `${showDashboard ? "flex" : "none"}`, flexDirection: "column", gap: "10px", zIndex: "101", transition: "2s ease", borderRadius: "5px", boxShadow: "-3px 3px 10px 1px rgba(0, 0, 0,0.2)" }}>
+          showDashboard && <Box sx={{ background: "white", position: "absolute", top: "50px", right: `${showDashboard ? "5px" : "-180px"}`, width: "170px", padding: "10px", display: `${showDashboard ? "flex" : "none"}`, flexDirection: "column", gap: "10px", zIndex: "101", transition: "2s ease", borderRadius: "5px", boxShadow: "-3px 3px 10px 1px rgba(0, 0, 0,0.2)" }}>
 
             <Typography component="h2" variant='h2' sx={{ fontSize: "0.8rem", textTransform: "uppercase", textAlign: "center", letterSpacing: "5px" }}>
               profile
@@ -273,13 +299,15 @@ function App() {
               </Typography>
             </Link>
 
-            {/* SETUP LOGOUT */}
+            {/* SETUP LOGOUT deleteUser */}
             <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "10px", cursor: "pointer" }} onClick={handleLogout}>
               <Logout sx={{ width: "20px", height: "20px", color: "black" }} />
               <Typography component="p" variant='p' sx={{ padding: "3px 1px", fontSize: "0.8rem" }}>
                 Log Out
               </Typography>
             </Box>
+
+            <Button fullWidth disabled={logoutProcessing} type="button" variant="contained" sx={{ backgroundColor: "rgb(230 0 0)", fontSize: "12px", ":hover": { backgroundColor: "rgb(255 0 0)" } }} onClick={handleUserDelete}> DELETE ACCOUNT </Button>
 
           </Box>
         }
@@ -288,22 +316,18 @@ function App() {
           height: "50px",
           width: "100%",
         }}>
-          <TopNav showSideNav={showSideNav} setShowSideNav={setShowSideNav} showDashboard={showDashboard} setShowDashboard={setShowDashboard} />
+          <TopNav />
         </Box>
 
         <Box sx={appContentContainerDivStyle}>
 
           <CollapsSideNav
-            collapsNavData={navData.collapsNavData.explore}
-            currentTab={currentTab}
-            setCurrentTab={setCurrentTab}
-            showSideNav={showSideNav}
-            setShowSideNav={setShowSideNav} />
+            collapsNavData={navData.collapsNavData.explore} />
 
           <Box className="scrollDiv" sx={routerContainerDivStyle}>
             <SideNav sideNavData={navData.sideNavData} />
             <Routes>
-              <Route path='/' element={<Home currentTab={currentTab} />} />
+              <Route path='/' element={<Home />} />
               <Route path='/signin' element={<SignIn />} />
               <Route path='/login' element={<Login />} />
               <Route path='/forget-password' element={<ForgetPassword />} />

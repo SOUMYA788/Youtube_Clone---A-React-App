@@ -5,10 +5,13 @@ import { Menu, Search, YouTube, AccountCircle, Mic, KeyboardBackspaceRounded } f
 import "./TopNav.css"
 import { NotificationIcon, VideoCallIcon } from '../../../Assets/Icons';
 import { useFirebaseAuthContext } from '../../../Context/FirebaseContext';
+import { useAppContextData } from '../../../Context/AppContext';
 
-export const TopNav = ({ showSideNav, setShowSideNav, showDashboard, setShowDashboard }) => {
-  const { currentUser } = useFirebaseAuthContext()
+export const TopNav = () => {
   const [searchValue, setSearchValue] = useState("")
+  const { currentUser } = useFirebaseAuthContext()
+  const [{ showSideNav, showDashboard }, dispatch] = useAppContextData();
+
   const navigate = useNavigate();
 
   const flexRowCenter = {
@@ -88,6 +91,13 @@ export const TopNav = ({ showSideNav, setShowSideNav, showDashboard, setShowDash
     height: "1.5em"
   }
 
+  const updateAppStateFromTopNav = (dispatchType, dispatchKey, dispatchValue) => {
+    dispatch({
+      type: dispatchType,
+      [dispatchKey]: dispatchValue
+    })
+  }
+
   const searchSubmit = (e) => {
     e.preventDefault();
     if (searchValue) {
@@ -99,7 +109,7 @@ export const TopNav = ({ showSideNav, setShowSideNav, showDashboard, setShowDash
   return (
     <Box sx={topNavMainContainer}>
       <Box component="div" sx={topNavElements}>
-        <Menu sx={navToggleBtnStyle} onClick={() => setShowSideNav(!showSideNav)} />
+        <Menu sx={navToggleBtnStyle} onClick={()=>updateAppStateFromTopNav("setShowSideNav", "showSideNav", !showSideNav)} />
         <Link component={ReactLink} className="homeLink" to='/' underline="none" variant='body1' color="black">
           <YouTube sx={youtubeLogoStyle} />
           <Typography variant='p' component="p">YouTube</Typography>
@@ -107,14 +117,7 @@ export const TopNav = ({ showSideNav, setShowSideNav, showDashboard, setShowDash
       </Box>
 
       <div id='topNavSearchDiv' className='navBoxShowHide'>
-        <KeyboardBackspaceRounded id="search_BackIcon" focusable="true" tabIndex="1" sx={{
-          display: {
-            xs: "inline-block",
-            sm: "none"
-          },
-          ...iconStyle,
-          marginRight: "5px"
-        }}
+        <KeyboardBackspaceRounded id="search_BackIcon" focusable="true" tabIndex="1" sx={{ display: { xs: "inline-block", sm: "none" }, ...iconStyle, marginRight: "5px" }}
           onFocus={() => {
             document.getElementById("topNavSearchDiv").classList.remove("fullSearchBar")
           }}
@@ -159,7 +162,7 @@ export const TopNav = ({ showSideNav, setShowSideNav, showDashboard, setShowDash
         <NotificationIcon className="topNavLeftIcons" />
         {
           currentUser ?
-            <Box onClick={() => setShowDashboard(!showDashboard)} sx={{ margin: "0 10px" }}>
+            <Box onClick={() => updateAppStateFromTopNav("setShowDashboard", "showDashboard", !showDashboard)} sx={{ margin: "0 10px" }}>
               <AccountCircle sx={{ cursor: "pointer", width: "30px", height: "30px", color: "red" }} />
             </Box> :
             <Link component={ReactLink} underline="none" variant='body1' color="black" to="/signin" sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>

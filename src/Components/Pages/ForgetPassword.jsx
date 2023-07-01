@@ -1,7 +1,7 @@
 import { Lock } from "@mui/icons-material";
 import { Avatar, Box, Button, Link, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { Link as ReactLink } from "react-router-dom";
+import { Link as ReactLink  } from "react-router-dom";
 import { customTheme } from "../Layouts/MuiInput";
 import { ThemeProvider, useTheme } from '@mui/material/styles';
 import { useFirebaseAuthContext } from "../../Context/FirebaseContext";
@@ -11,6 +11,7 @@ export const ForgetPassword = () => {
 
     const [resetEmail, setResetEmail] = useState("")
     const [resetError, setResetError] = useState(null)
+    const [resetGuide, setResetGuide] = useState(null);
     const [resetProcess, setResetProcess] = useState(false)
 
     const outerTheme = useTheme();
@@ -20,9 +21,11 @@ export const ForgetPassword = () => {
         e.preventDefault();
         // trying to login
         try {
+            setResetGuide("")
             setResetProcess(true)
             setResetError("")
             await resetPasswordWithEmail(resetEmail)
+            setResetGuide("Password reset link send to your inbox")
         } catch (error) {
             setResetError("Faild to reset password")
         }
@@ -31,14 +34,14 @@ export const ForgetPassword = () => {
 
     return (
 
-        <Box sx={{ width: { xs: "100%", sm: "300px", }, padding: "5px", margin: "0 auto", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+        <Box sx={{ width: { xs: "100%", sm: "300px", }, padding: "5px", margin: "0 auto", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position:"relative" }}>
 
             <Avatar sx={{ bgcolor: resetError ? "red" : "green" }}>
                 <Lock />
             </Avatar>
 
             <Typography variant="p" component="p" sx={{ margin: "5px 0 0", fontSize: "1rem" }}>
-                {resetError ? resetError : "Reset Password"}
+                {resetError || resetGuide || "Reset Password"}
             </Typography>
 
             <Box component="form" onSubmit={handleResetPassword} sx={{ width: "100%" }}>

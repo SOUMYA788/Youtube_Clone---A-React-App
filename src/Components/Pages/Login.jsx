@@ -1,7 +1,7 @@
 import { Lock } from "@mui/icons-material";
 import { Avatar, Box, Button, Link, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { Link as ReactLink } from "react-router-dom";
+import { Link as ReactLink, useNavigate } from "react-router-dom";
 import { customTheme } from "../Layouts/MuiInput";
 import { ThemeProvider, useTheme } from '@mui/material/styles';
 import { useFirebaseAuthContext } from "../../Context/FirebaseContext";
@@ -18,6 +18,8 @@ export const Login = () => {
     const [loginUILoading, setLoginUILoading] = useState(false)
 
     const outerTheme = useTheme();
+
+    const navigate = useNavigate()
 
     // a function used to set an error for login problems...
     const setLoginError = (errorInfo) => {
@@ -37,6 +39,7 @@ export const Login = () => {
             setLoginUILoading(true)
             setLoginError("")
             await login(userEmail, userPassword)
+            navigate("/")
         } catch (error) {
             setLoginError("Faild to create an account")
         }
