@@ -3,8 +3,9 @@ export const appData = {
     showSideNav:false,
     showDashboard:false,
     logOutError:null,
-    accountDeleteError:null,
     logoutProcessing:false,
+    accountDeleteError:null,
+    accountDeleteProcessing:false,
     showAlert:false,
 }
 
@@ -34,16 +35,22 @@ export const appDataUpdator = (state, action) => {
                 logOutError: action.logOutError
             }
         }
+        case "setLogoutProcessing": {
+            return {
+                ...state,
+                logoutProcessing: action.logoutProcessing
+            }
+        }
         case "setAccountDeleteError": {
             return {
                 ...state,
                 accountDeleteError: action.accountDeleteError
             }
         }
-        case "setLogoutProcessing": {
+        case "setAccountDeleteProcessing": {
             return {
                 ...state,
-                logoutProcessing: action.logoutProcessing
+                accountDeleteProcessing: action.accountDeleteProcessing
             }
         }
         case "setShowAlert": {

@@ -10,7 +10,7 @@ import "./App.css";
 
 function App() {
   const { currentUser, logOut, deleteUserId } = useFirebaseAuthContext();
-  const [{ showSideNav, showDashboard, logOutError, accountDeleteError, logoutProcessing, showAlert }, dispatch] = useAppContextData();
+  const [{ showSideNav, showDashboard, logOutError, logoutProcessing, accountDeleteError, accountDeleteProcessing, showAlert }, dispatch] = useAppContextData();
 
   const appContentContainerDivStyle = {
     height: "calc(100vh - 50px)",
@@ -233,18 +233,21 @@ function App() {
 
   const handleLogout = async () => {
     try {
+      updateAppData("setLogoutProcessing", "logoutProcessing", true)
       updateAppData("setLogOutError", "logOutError", null)
       await logOut()
     } catch (error) {
       updateAppData("setLogOutError", "logOutError", "faild to logout")
+    }finally{
+      updateAppData("setLogoutProcessing", "logoutProcessing", false)
     }
   }
 
   const handleUserDelete = async (e) => {
     e.preventDefault();
     try {
-      updateAppData("setLogoutProcessing", "logoutProcessing", true)
       updateAppData("setAccountDeleteError", "accountDeleteError", null)
+      updateAppData("setAccountDeleteProcessing", "accountDeleteProcessing", true)
       if (currentUser) {
         await deleteUserId(currentUser?.uid);
       } else {
@@ -252,11 +255,12 @@ function App() {
       }
     } catch (error) {
       updateAppData("setAccountDeleteError", "accountDeleteError", "faild to delete your account")
+    }finally{
+      updateAppData("setAccountDeleteProcessing", "accountDeleteProcessing", false)
     }
-    updateAppData("setLogoutProcessing", "logoutProcessing", false)
-    updateAppData("setLogoutProcessing", "logoutProcessing", false)
   }
 
+  // update:"remove outer box, that's why we can set error just updating state of error..."
   const setErrorAlert = (error, alertType) => {
     updateAppData("setShowAlert", "showAlert", true)
     return (
@@ -307,7 +311,7 @@ function App() {
               </Typography>
             </Box>
 
-            <Button fullWidth disabled={logoutProcessing} type="button" variant="contained" sx={{ backgroundColor: "rgb(230 0 0)", fontSize: "12px", ":hover": { backgroundColor: "rgb(255 0 0)" } }} onClick={handleUserDelete}> DELETE ACCOUNT </Button>
+            <Button fullWidth disabled={accountDeleteProcessing} type="button" variant="contained" sx={{ backgroundColor: "rgb(230 0 0)", fontSize: "12px", ":hover": { backgroundColor: "rgb(255 0 0)" } }} onClick={handleUserDelete}> DELETE ACCOUNT </Button>
 
           </Box>
         }
