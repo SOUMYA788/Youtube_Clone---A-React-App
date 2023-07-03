@@ -1,16 +1,16 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link as ReactLink } from 'react-router-dom';
 import { Box, Button, Link, Typography } from '@mui/material';
 import { HomeOutlined, HomeRounded, SubscriptionsOutlined, Subscriptions, VideoLibraryOutlined, VideoLibrary, Restore, RestoreOutlined, SlideshowRounded, AccessTimeOutlined, AccountCircleRounded, WhatshotOutlined, WhatshotRounded, MusicNote, MusicNoteOutlined, AccountCircle, Logout, LockResetRounded } from '@mui/icons-material';
 import { CreatorStudioIcon, FashionAndBuityIcon, FashionAndBuityIcon_Active, FeedbackIcon, GamingIcon, GamingIcon_Active, HelpIcon, HotspotIcon, HotspotIcon_Active, LearningIcon, LearningIcon_Active, MoviesIcon, MoviesIcon_Active, NewsIcon, NewsIcon_Active, ReportFlagIcon, SettingsIcon, ShortsIcon, ShortsIcon_Active, SportsIcon, SportsIcon_Active, YoutubeIcon, YoutubeKidsIcon, YoutubeMusicIcon, YoutubeTvIcon, } from './Assets/Icons';
-import { TopNav, Home, Search, Channel, Player, Trending, CollapsSideNav, SideNav, SignIn, DashBoard, CustomAlert, Login, ForgetPassword } from './Components';
+import { TopNav, Home, Search, Channel, Player, Trending, CollapsSideNav, SideNav, SignIn, DashBoard, Alert, Login, ForgetPassword } from './Components';
 import { useFirebaseAuthContext } from './Context/FirebaseContext';
 import { useAppContextData } from './Context/AppContext';
 import "./App.css";
 
 function App() {
   const { currentUser, logOut, deleteUserId } = useFirebaseAuthContext();
-  const [{ showSideNav, showDashboard, logOutError, logoutProcessing, accountDeleteError, accountDeleteProcessing, showAlert }, dispatch] = useAppContextData();
+  const [{ showAlert, showSideNav, showDashboard, accountDeleteProcessing, accountDeleteError, logOutError }, dispatch] = useAppContextData();
 
   const appContentContainerDivStyle = {
     height: "calc(100vh - 50px)",
@@ -238,7 +238,7 @@ function App() {
       await logOut()
     } catch (error) {
       updateAppData("setLogOutError", "logOutError", "faild to logout")
-    }finally{
+    } finally {
       updateAppData("setLogoutProcessing", "logoutProcessing", false)
     }
   }
@@ -249,35 +249,32 @@ function App() {
       updateAppData("setAccountDeleteError", "accountDeleteError", null)
       updateAppData("setAccountDeleteProcessing", "accountDeleteProcessing", true)
       if (currentUser) {
-        await deleteUserId(currentUser?.uid);
+        await deleteUserId(currentUser?.currentUser);
       } else {
         throw new Error("faild to delete account");
       }
     } catch (error) {
       updateAppData("setAccountDeleteError", "accountDeleteError", "faild to delete your account")
-    }finally{
+    } finally {
       updateAppData("setAccountDeleteProcessing", "accountDeleteProcessing", false)
     }
   }
 
-  // update:"remove outer box, that's why we can set error just updating state of error..."
-  const setErrorAlert = (error, alertType) => {
-    updateAppData("setShowAlert", "showAlert", true)
-    return (
-      <Box sx={{ width: "90%", position: "absolute", top: "10px", left: "5%", zIndex: "1", display: showAlert ? "block" : "none" }}>
-        <CustomAlert alertType={alertType} alertMessage={error} />
-      </Box>
-    )
-  }
-
+  useEffect(() => {
+    if (accountDeleteError || logOutError) {
+      updateAppData("setShowAlert", "showAlert", true);
+    }
+  }, [accountDeleteError, logOutError])
 
   return (
     <Router>
       <Box id="app_mainContainerDiv" sx={{ position: "relative", width: "100%", height: "100dvh" }} onClick={handleNavBtn} >
 
-        {/* ALERTS */}
-        {logOutError && setErrorAlert(logOutError, "warn")}
-        {accountDeleteError && setErrorAlert(accountDeleteError, "warn")}
+        {/* alert */}
+
+        <Box sx={{ width: "90%", display: showAlert ? "block" : "none", position: "absolute", top: "2px", left: "5%", zIndex:"1" }}>
+          <Alert />
+        </Box>
 
         {
           showDashboard && <Box sx={{ background: "white", position: "absolute", top: "50px", right: `${showDashboard ? "5px" : "-180px"}`, width: "170px", padding: "10px", display: `${showDashboard ? "flex" : "none"}`, flexDirection: "column", gap: "10px", zIndex: "101", transition: "2s ease", borderRadius: "5px", boxShadow: "-3px 3px 10px 1px rgba(0, 0, 0,0.2)" }}>

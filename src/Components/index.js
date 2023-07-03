@@ -16,4 +16,4 @@ export {SideNav} from "./Layouts/SideNav/SideNav";
 export {Video} from "./Layouts/Video/Video"
 export {VideoCard} from "./Layouts/Cards/VideoCard/VideoCard"
 export {ChannelCard} from "./Layouts/Cards/ChannelCard/ChannelCard"
-export {CustomAlert} from "./Layouts/CustomAlert"
+export {Alert} from "./Layouts/Alert"
