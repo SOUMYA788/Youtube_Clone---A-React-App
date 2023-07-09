@@ -6,11 +6,7 @@ import "./SideNav.css"
 
 export const SideNav = ({ sideNavData, currentTab, setCurrentTab }) => {
 	return (
-		<Box sx={{
-			width: "70px",
-			height: "100%",
-			display:"none"
-		}}>
+		<Box sx={{ width: "70px", height: "100%", display:"none" }}>
 			{
 				sideNavData.map((sideNavDataElement, indx) => {
 					return (

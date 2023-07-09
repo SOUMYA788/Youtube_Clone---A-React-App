@@ -20,8 +20,6 @@ export const ChannelCard = ({ channelCardInfo, channelCardDirection, channelCard
     }
   }
 
-  console.log(channelCardInfo)
-
   const channelBoxContainer = {
     width: {
       xs: channelCardDirection ? "100%" : "50vw",

@@ -1,12 +1,12 @@
 export const appData = {
-    currentTab:"home",
-    showSideNav:false,
-    showDashboard:false,
-    logOutError:null,
-    logoutProcessing:false,
-    accountDeleteError:null,
-    accountDeleteProcessing:false,
-    showAlert:false,
+    currentTab: "home",
+    showSideNav: false,
+    showDashboard: false,
+    logOutError: null,
+    logoutProcessing: false,
+    accountDeleteError: null,
+    accountDeleteProcessing: false,
+    showAlert: false,
 }
 
 export const appDataUpdator = (state, action) => {
@@ -65,4 +65,11 @@ export const appDataUpdator = (state, action) => {
             }
         }
     }
+}
+
+export const updateAppData = (dispatch, dispatchType, dispatchKey, dispatchValue) => {
+    return dispatch({
+        type: dispatchType,
+        [dispatchKey]: dispatchValue
+    })
 }

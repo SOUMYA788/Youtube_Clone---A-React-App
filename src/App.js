@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link as ReactLink } from 'react-router-dom';
 import { Box, Button, Link, Typography } from '@mui/material';
 import { HomeOutlined, HomeRounded, SubscriptionsOutlined, Subscriptions, VideoLibraryOutlined, VideoLibrary, Restore, RestoreOutlined, SlideshowRounded, AccessTimeOutlined, AccountCircleRounded, WhatshotOutlined, WhatshotRounded, MusicNote, MusicNoteOutlined, AccountCircle, Logout, LockResetRounded } from '@mui/icons-material';
@@ -7,7 +7,8 @@ import { TopNav, Home, Search, Channel, Player, Trending, CollapsSideNav, SideNa
 import { useFirebaseAuthContext } from './Context/FirebaseContext';
 import { useAppContextData } from './Context/AppContext';
 import "./App.css";
-
+import { updateAppData } from './Reducers/AppReducer';
+ 
 function App() {
   const { currentUser, logOut, deleteUserId } = useFirebaseAuthContext();
   const [{ showAlert, showSideNav, showDashboard, accountDeleteProcessing, accountDeleteError, logOutError }, dispatch] = useAppContextData();
@@ -219,52 +220,45 @@ function App() {
 
   }
 
-  const updateAppData = (dispatchType, dispatchKey, dispatchValue) => {
-    return dispatch({
-      type: dispatchType,
-      [dispatchKey]: dispatchValue
-    })
-  }
-
   const handleNavBtn = () => {
-    if (showSideNav) { updateAppData("setShowSideNav", "showSideNav", false) }
-    if (showDashboard) { updateAppData("setShowDashboard", "showDashboard", false) }
+    if (showSideNav) { updateAppData(dispatch, "setShowSideNav", "showSideNav", false) }
+    if (showDashboard) { updateAppData(dispatch, "setShowDashboard", "showDashboard", false) }
   }
 
   const handleLogout = async () => {
     try {
-      updateAppData("setLogoutProcessing", "logoutProcessing", true)
-      updateAppData("setLogOutError", "logOutError", null)
+      updateAppData(dispatch, "setLogoutProcessing", "logoutProcessing", true)
+      updateAppData(dispatch, "setLogOutError", "logOutError", null)
       await logOut()
     } catch (error) {
-      updateAppData("setLogOutError", "logOutError", "faild to logout")
+      updateAppData(dispatch, "setLogOutError", "logOutError", "faild to logout")
     } finally {
-      updateAppData("setLogoutProcessing", "logoutProcessing", false)
+      updateAppData(dispatch, "setLogoutProcessing", "logoutProcessing", false)
     }
   }
 
   const handleUserDelete = async (e) => {
     e.preventDefault();
     try {
-      updateAppData("setAccountDeleteError", "accountDeleteError", null)
-      updateAppData("setAccountDeleteProcessing", "accountDeleteProcessing", true)
+      updateAppData(dispatch, "setAccountDeleteError", "accountDeleteError", null)
+      updateAppData(dispatch, "setAccountDeleteProcessing", "accountDeleteProcessing", true)
       if (currentUser) {
         await deleteUserId(currentUser?.currentUser);
       } else {
         throw new Error("faild to delete account");
       }
     } catch (error) {
-      updateAppData("setAccountDeleteError", "accountDeleteError", "faild to delete your account")
+      updateAppData(dispatch, "setAccountDeleteError", "accountDeleteError", "faild to delete your account")
     } finally {
-      updateAppData("setAccountDeleteProcessing", "accountDeleteProcessing", false)
+      updateAppData(dispatch, "setAccountDeleteProcessing", "accountDeleteProcessing", false)
     }
   }
 
   useEffect(() => {
     if (accountDeleteError || logOutError) {
-      updateAppData("setShowAlert", "showAlert", true);
+      updateAppData(dispatch, "setShowAlert", "showAlert", true);
     }
-  }, [accountDeleteError, logOutError])
+  }, [accountDeleteError, logOutError, dispatch])
 
   return (
     <Router>

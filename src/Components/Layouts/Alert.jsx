@@ -13,6 +13,7 @@
 import { Alert as MaterialAlert } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useAppContextData } from '../../Context/AppContext';
+import { updateAppData } from '../../Reducers/AppReducer';
 
 export function Alert() {
 
@@ -33,18 +34,11 @@ export function Alert() {
         }
     ]
 
-    const updateAppDataFromAlert = (dispatchType, dispatchKey, dispatchValue) => {
-        return dispatch({
-            type: dispatchType,
-            [dispatchKey]: dispatchValue
-        })
-    }
-
     useEffect(() => {
         if (!accountDeleteError && !logOutError) {
-            updateAppDataFromAlert("setShowAlert", "showAlert", false);
+            updateAppData(dispatch, "setShowAlert", "showAlert", false);
         }
-    }, [accountDeleteError, logOutError])
+    }, [accountDeleteError, logOutError, dispatch])
 
 
     return (
@@ -52,7 +46,7 @@ export function Alert() {
             {
                 errorsList.map(({error, dispatchType, dispatchKey, dispatchValue}, indx) => {
                     return (
-                        error && <MaterialAlert severity="error" onClose={() => { updateAppDataFromAlert(dispatchType, dispatchKey, dispatchValue) }} key={`error_${indx}`}>
+                        error && <MaterialAlert severity="error" onClose={() => { updateAppData(dispatch, dispatchType, dispatchKey, dispatchValue) }} key={`error_${indx}`}>
                             {error}
                         </MaterialAlert>
                     )
