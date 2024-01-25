@@ -67,6 +67,12 @@ export const appDataUpdator = (state, action) => {
     }
 }
 
+/**
+ * updateAppData is responsible to update states.
+ * @param {string} dispatchType type of dispatch
+ * @param {string} dispatchKey key of dispatch
+ * @param {string} dispatchValue corresponding value of dispatch key
+ */
 export const updateAppData = (dispatch, dispatchType, dispatchKey, dispatchValue) => {
     return dispatch({
         type: dispatchType,

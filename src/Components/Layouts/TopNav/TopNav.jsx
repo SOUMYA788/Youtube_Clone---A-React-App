@@ -1,102 +1,33 @@
 import React, { useState } from 'react'
-import { useNavigate, Link as ReactLink } from 'react-router-dom';
-import { Box, Typography, Link } from '@mui/material'
-import { Menu, Search, YouTube, AccountCircle, Mic, KeyboardBackspaceRounded } from '@mui/icons-material';
-import "./TopNav.css"
-import { NotificationIcon, VideoCallIcon } from '../../../Assets/Icons';
-import { useFirebaseAuthContext } from '../../../Context/FirebaseContext';
-import { useAppContextData } from '../../../Context/AppContext';
+import { useNavigate, Link } from 'react-router-dom';
 
-export const TopNav = () => {
+import { BiLogoYoutube, BiMenu } from "react-icons/bi"
+import { GoSearch } from "react-icons/go"
+import { MdOutlineKeyboardBackspace } from "react-icons/md"
+
+import { useAppContextData } from '../../../Context/AppContext';
+import TopNavUserProfileSection from './TopNavUserProfileSection';
+import { updateAppData } from '../../../Reducers/AppReducer';
+
+import Button from '../Button';
+import { ThemeSwitcher } from '../ThemeSwitcher';
+
+
+
+const TopNavSearchBtn = ({ children, className, ...props }) => {
+  return <Button type="submit" className={`w-8 h-8 flex items-center justify-center px-1 rounded-full bg-slate-300 focus:bg-slate-800 hover:bg-slate-800 dark:bg-transparent text-slate-800 focus:text-white hover:text-white dark:text-slate-400 dark:hover:text-white dark:focus:text-white border dark:border-transparent border-slate-400 hover:border-slate-800 focus:border-slate-800 font-bold ${className}`} title='search' {...props}>
+    {children}
+  </Button>
+}
+
+
+
+export const TopNav = ({ theme, setTheme }) => {
   const [searchValue, setSearchValue] = useState("")
-  const { currentUser } = useFirebaseAuthContext()
-  const [{ showSideNav, showDashboard }, dispatch] = useAppContextData();
+  const [showMobileSearchBar, setShowMobileSearchBar] = useState(false);
+  const [{ showSideNav }, dispatch] = useAppContextData();
 
   const navigate = useNavigate();
-
-  const flexRowCenter = {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between"
-  }
-
-  const topNavMainContainer = {
-    width: "100%",
-    height: "100%",
-    ...flexRowCenter,
-    padding: "0 1%",
-    position: "relative",
-    borderBottom: "1px solid #cdcdcd",
-    borderTop: "1px solid #cdcdcd",
-  }
-
-  const topNavElements = {
-    ...flexRowCenter
-  }
-
-  // style for search bar box, temporary unused...
-  /*
-  const searchBarBoxStyle = {
-    ...flexRowCenter,
-    border: "1px solid #cdcdcd",
-    borderRadius: "25px",
-    flex: "0.5"
-  }
-  */
-
-  const iconStyle = {
-    width: {
-      sm: "1.5em",
-      xs: "1.4em"
-    },
-    height: {
-      sm: "1.5em",
-      xs: "1.4em"
-    },
-    fontSize: {
-      sm: "1.5em",
-      xs: "1.4em"
-    },
-    padding: "5px",
-    borderRadius: "50%",
-    transition: "0.1s ease",
-    cursor: "pointer",
-    ":hover": {
-      backgroundColor: "#d3d3d3"
-    }
-  }
-
-  const topNavSearchEnterBtnLogo = {
-    width: "100%",
-    height: "100%",
-    padding: "5px",
-    color: "#0f0f0f"
-  }
-
-  const navToggleBtnStyle = {
-    marginRight: "10px",
-    ...iconStyle,
-    display: {
-      xs: "none",
-      sm: "inline-block"
-    }
-  }
-
-  const youtubeLogoStyle = {
-    color: "red",
-    marginRight: "5px",
-    fontSize: "1.5em",
-    width: "1.5em",
-    height: "1.5em"
-  }
-
-  const updateAppStateFromTopNav = (dispatchType, dispatchKey, dispatchValue) => {
-    dispatch({
-      type: dispatchType,
-      [dispatchKey]: dispatchValue
-    })
-  }
 
   const searchSubmit = (e) => {
     e.preventDefault();
@@ -107,74 +38,56 @@ export const TopNav = () => {
   }
 
   return (
-    <Box sx={topNavMainContainer}>
-      <Box component="div" sx={topNavElements}>
-        <Menu sx={navToggleBtnStyle} onClick={()=>updateAppStateFromTopNav("setShowSideNav", "showSideNav", !showSideNav)} />
-        <Link component={ReactLink} className="homeLink" to='/' underline="none" variant='body1' color="black">
-          <YouTube sx={youtubeLogoStyle} />
-          <Typography variant='p' component="p">YouTube</Typography>
+    <div className="w-full py-2 px-2 shadow sticky top-0 bg-opacity-65 backdrop-blur flex flex-row items-center justify-between">
+
+      <div className="h-full flex flex-row items-center justify-center gap-5">
+        <Button className='h-10 w-10 p-1 text-slate-600 dark:bg-slate-700 dark:focus:bg-slate-600 dark:text-slate-400 focus:text-black hover:text-black dark:focus:text-white hidden md:inline-flex md:items-center md:justify-center rounded-md dark:rounded-full border-2 dark:border border-transparent focus:border-slate-600 hover:border-slate-600 dark:border-transparent transition-colors' onClick={() => updateAppData(dispatch, "setShowSideNav", "showSideNav", !showSideNav)}>
+          <BiMenu className='w-full h-full' />
+        </Button>
+
+        <Link to="/" className="font-semibold text-slate-500 hover:text-black focus:text-black dark:text-slate-400 dark:focus:text-white outline-none border-none no-underline flex flex-row items-center justify-center">
+          <BiLogoYoutube className='text-red-500 w-8 h-8 mr-1.5' />
+          <p>YouTube</p>
         </Link>
-      </Box>
-
-      <div id='topNavSearchDiv' className='navBoxShowHide'>
-        <KeyboardBackspaceRounded id="search_BackIcon" focusable="true" tabIndex="1" sx={{ display: { xs: "inline-block", sm: "none" }, ...iconStyle, marginRight: "5px" }}
-          onFocus={() => {
-            document.getElementById("topNavSearchDiv").classList.remove("fullSearchBar")
-          }}
-        />
-        <form className='searchForm' onSubmit={searchSubmit}>
-          <input type="text" placeholder='Search' className='topNavSearchBar' value={searchValue} onChange={(e) => {
-            setSearchValue(e.target.value)
-          }} />
-          <button type="submit" className='topNavSearchEnterBtn' title='search'>
-            <Search sx={topNavSearchEnterBtnLogo} />
-          </button>
-        </form>
-
-        <Mic sx={iconStyle} title="voice search" />
       </div>
 
-      <Box sx={flexRowCenter}>
-        <Search
-          focusable="true"
-          tabIndex="1"
-          onFocus={() => { document.getElementById("topNavSearchDiv").classList.add("fullSearchBar") }}
-          sx={{
-            display: {
-              xs: "inline-block",
-              sm: "none"
-            },
-            width: "1.5em",
-            height: "1.5em",
-            fontSize: "1.5em",
-            padding: "7px",
-            borderRadius: "25px",
-            transition: "0.1s ease",
-            cursor: "pointer",
-            margin: "0 auto",
-            outline: "none",
-            ":hover": {
-              backgroundColor: "#d3d3d3"
-            }
-          }}
-        />
-        <VideoCallIcon className="topNavLeftIcons" />
-        <NotificationIcon className="topNavLeftIcons" />
-        {
-          currentUser ?
-            <Box onClick={() => updateAppStateFromTopNav("setShowDashboard", "showDashboard", !showDashboard)} sx={{ margin: "0 10px" }}>
-              <AccountCircle sx={{ cursor: "pointer", width: "30px", height: "30px", color: "red" }} />
-            </Box> :
-            <Link component={ReactLink} underline="none" variant='body1' color="black" to="/signin" sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-              <AccountCircle sx={{ margin: "0 10px", cursor: "pointer", width: "30px", height: "30px", color: "red" }} />
-              <Typography
-                component="p"
-                variant='p'>
-                Sign In
-              </Typography>
-            </Link>
-        }
-      </Box>
-    </Box>
+
+      <div className={`bg-slate-200 dark:bg-slate-700 rounded-full p-2 flex-[0.5] h-full ${showMobileSearchBar ? "flex" : "hidden"} md:flex md:items-center md:justify-center`}>
+        {/* backspace icon use to remove search bar from mobile screens */}
+
+        <TopNavSearchBtn className={`${showMobileSearchBar ? "inline-block" : "hidden"} md:hidden`} onClick={() => setShowMobileSearchBar(value => !value)}>
+
+          <MdOutlineKeyboardBackspace className={`h-full w-full`} />
+
+        </TopNavSearchBtn>
+
+        <form className='h-full w-full rounded-full flex flex-row items-center justify-center' onSubmit={searchSubmit}>
+
+          <input type="text" placeholder='Search' className='h-full text-black dark:text-white min-w-1 outline-none border-none flex-1 bg-transparent px-2' value={searchValue} onChange={(e) => { setSearchValue(e.target.value) }} />
+
+          <TopNavSearchBtn>
+            <GoSearch className='w-full h-full' />
+          </TopNavSearchBtn>
+
+        </form>
+
+      </div>
+
+
+      <div className="flex flex-row items-center justify-center gap-5 h-full">
+
+        <ThemeSwitcher theme={theme} setTheme={setTheme} />
+
+        {/* top nav right side earech Icon for mobile screens */}
+        <TopNavSearchBtn className={`md:hidden`} onClick={() => setShowMobileSearchBar(value => !value)}>
+          <GoSearch className='w-full h-full' />
+        </TopNavSearchBtn>
+
+        <TopNavUserProfileSection />
+
+      </div>
+
+
+    </div>
   )
 }

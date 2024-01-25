@@ -1,3 +1,32 @@
+.flexRowCenterBetween{ 
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex; 
+	-webkit-flex-direction: row;
+	-ms-flex-direction: row;
+	flex-direction: row; 
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center; 
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	justify-content: space-between; 
+}
+
+.topNavMainContainer{ 
+	width: 100%; 
+	height: 100%; 
+	padding: 0 1%; 
+	border-bottom: 1px solid #cdcdcd; 
+	border-top: 1px solid #cdcdcd;
+}
+
+.topNavElements{
+	display: flex;
+}
+
 .homeLink {
 	cursor: pointer;
 	text-decoration: none;
@@ -23,20 +52,6 @@
 .searchForm {
 	height: 100%;
 	width: 100%;
-	display: -webkit-box;
-	display: -webkit-flex;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-flex-direction: row;
-	-ms-flex-direction: row;
-	flex-direction: row;
-	-webkit-align-items: center;
-	-webkit-box-align: center;
-	-ms-flex-align: center;
-	align-items: center;
-	-webkit-box-pack: justify;
-	-webkit-justify-content: space-between;
-	justify-content: space-between;
 	border: 1px solid #cdcdcd;
 	border-radius: 25px;
 	background-color: white;
@@ -67,6 +82,13 @@
 
 .topNavSearchEnterBtn:hover {
 	background-color: #d3d3d3;
+}
+
+.topNavSearchEnterBtnIcon{
+	width: 100%;
+    height: 100%;
+    padding: 5px;
+    color: #0f0f0f;
 }
 
 .topNavLeftIcons {

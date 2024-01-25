@@ -2,43 +2,28 @@ import React from 'react'
 import { Box } from '@mui/system';
 import { VideoCard, ChannelCard } from '../../';
 
-export const Video = ({ videos, videoDirection }) => {
+export const Video = ({ videos }) => {
     
     if (!videos?.length) return "Loading...";
-
-    const video_mainContainer = {
-        width: "100%",
-        height: "100%",
-        padding: "1%",
-        display: "flex",
-        flexDirection: {
-            xs: "column",
-            sm: videoDirection || "row"
-        },
-        flexWrap: {
-            xs: "nowrap",
-            sm: videoDirection ? "nowrap" : "wrap"
-        }
-    }
 
     const videoCardHolder = {
         width: {
             xs: "80vw",
-            sm: videoDirection ? "100%" : "30vw"
+            sm: layoutDirection ? "100%" : "30vw"
         },
         minHeight: {
             sm: "20vw"
         },
         margin: {
             xs: "5px auto",
-            sm: videoDirection ? "10px auto" : "1%"
+            sm: layoutDirection ? "10px auto" : "1%"
         },
         cursor: "pointer"
     }
 
 
     return (
-        <Box sx={video_mainContainer} >
+        <div className="w-full h-full p-1 flex flex-row flex-wrap" >
             {
                 videos.map((videoElement, indx) => (
                     <Box sx={videoCardHolder} key={`${videoElement?.type}_${indx}`}>
@@ -47,7 +32,7 @@ export const Video = ({ videos, videoDirection }) => {
                     </Box>
                 ))
             }
-        </Box>
+        </div>
     )
 }
 
