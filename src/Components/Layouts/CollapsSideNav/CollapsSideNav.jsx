@@ -8,48 +8,6 @@ export const CollapsSideNav = ({ collapsNavData }) => {
 
   const [{ currentTab, showSideNav }, dispatch] = useAppContextData();
 
-  const sideNavContainerStyle = {
-    height: {
-      xs: "50px",
-      sm: "100%"
-    },
-    width: {
-      xs: "100%",
-      sm: "155px"
-    },
-    display: "flex",
-    flexDirection: {
-      xs: "row",
-      sm: "column"
-    },
-    flexWrap: "nowrap",
-    gap: {
-      xs: "0",
-      sm: "5px",
-    },
-    padding: {
-      xs: "5px",
-      sm: "10px",
-    },
-    overflowY: {
-      sm: "scroll",
-      xs: "hidden"
-    },
-    overflowX: {
-      sm: "hidden",
-      xs: "scroll"
-    },
-    scrollBehavior: "smooth",
-    position: {
-      xs: "static",
-      sm: "absolute",
-    },
-    left: "0",
-    top: "0",
-    background: "white",
-    zIndex: 100,
-  }
-
   const handleNavLinkClick = (currentTab, showSideNav) => {
     dispatch({
       type: "setCurrentTab",
@@ -74,45 +32,21 @@ export const CollapsSideNav = ({ collapsNavData }) => {
     }
   }
   return (
-    <Box id="collapsSideNavMainContainer" sx={sideNavContainerStyle} className={`${showSideNav ? "scrollDiv" : "hideCollapsNav scrollDiv"}`}>
+    <div className={`h-fit w-full 600px:h-full 600px:w-40 flex flex-row 600px:flex-col flex-nowrap gap-3 600px:gap-1 p-2 600px:p-3 600px:m-0 overflow-x-scroll 600px:overflow-y-scroll scroll-smooth 600px:absolute 600px:left-0 600px:top-10 bg-white dark:bg-slate-800 z-40`}>
       {
         collapsNavData.map((collapsNavDataElement, indx) => (
 
-          <NavLink
-            className={"collapsSideNavLink"}
-            to={setLink(collapsNavDataElement.name)}
-            key={`${collapsNavDataElement.name}_${indx}`}
-            onClick={() => handleNavLinkClick(collapsNavDataElement.name, false)}>
+          <NavLink className={"no-underline text-black dark:text-slate-400 600px:my-4 outline-none rounded-sm focus:ring-2 ring-slate-500 ring-offset-1"} to={setLink(collapsNavDataElement.name)} key={`${collapsNavDataElement.name}_${indx}`} onClick={() => handleNavLinkClick(collapsNavDataElement.name, false)}>
 
-            <Box sx={{
-              width: {
-                sm: "100%",
-                xs: "125px"
-              },
-              height: "100%",
-              padding: "5px",
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: {
-                xs: "center",
-                sm: "flex-start"
-              }
-            }}>
+            <div className='text-sm capitalize w-max h-9 600px:w-full p-2 flex flex-row items-center justify-center 600px:justify-start'>
 
-              {collapsNavDataElement.name === currentTab ? <collapsNavDataElement.active_icon className="collapsNavLinksIcon" /> : <collapsNavDataElement.icon className="collapsNavLinksIcon" />}
+              {collapsNavDataElement.name}
 
-              <Typography variant='p' component="p" sx={{
-                fontSize: "0.8rem",
-                textTransform: "capitalize"
-              }}>
-                {collapsNavDataElement.name}
-              </Typography>
-            </Box>
+            </div>
           </NavLink>
 
         ))
       }
-    </Box>
+    </div>
   )
 }

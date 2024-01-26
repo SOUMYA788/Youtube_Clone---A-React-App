@@ -1,5 +1,6 @@
-.videoCard_videoLinks,
+.videoLinks,
 .videoCard_videoChannelLink{
+    
     text-decoration: none;
     color: black;
 }

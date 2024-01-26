@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import { YoutubeAPI } from '../../../Assets/YoutubeAPI'
 import { ChannelCard, VideoCard } from '../../'
 import "./Channel.css"
+import { BiLogoYoutube } from 'react-icons/bi'
 
 export const Channel = () => {
   const [channelVideos, setChannelVideos] = useState([])
@@ -20,20 +21,6 @@ export const Channel = () => {
   if (!channelData) return ""
 
   const { image } = channelData;
-
-  const channelMainContainerBoxStyle = {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column"
-  }
-
-  const channelBannerStyle = {
-    width: "100%",
-    height: "170px",
-    backgroundColor: "black",
-    objectFit: "contain"
-  }
 
   const videoBoxStyle = {
     width: "100%",
@@ -60,13 +47,15 @@ export const Channel = () => {
   }
 
   return (
-    <Box sx={channelMainContainerBoxStyle}>
+    <div className='w-full h-full flex flex-col'>
 
-      <Box sx={channelBannerStyle} component="img" src={image?.banner[0]?.url} />
+      {
+        image?.banner[0]?.url ? <img className='w-full h-44 bg-black object-contain' src={image.banner[0].url} /> : <BiLogoYoutube className='w-7 h-7 rounded-full' />
+      }
 
-      <Box sx={{ width: "100%", height: "80px", margin: "10px 0", padding: "0 10px" }}>
-        <ChannelCard channelCardInfo={channelData} channelCardDirection="row" channelCardLogoSize="55px" />
-      </Box>
+      <div className='w-full h-20 my-3 p-3'>
+        <ChannelCard channelCardInfo={channelData} cardDirection="row" cardLogoStyle="w-14 h-14 mt-3" />
+      </div>
 
       <Box sx={videoBoxStyle}>
         {
@@ -78,7 +67,7 @@ export const Channel = () => {
         }
       </Box>
 
-    </Box>
+    </div>
   )
 
 }

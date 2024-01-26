@@ -34,19 +34,16 @@ function App() {
 
   return (
     <Router>
-      <div className={`${theme}`} onClick={handleNavBtn} >
+      <div className={`w-full p-1 max-h-screen relative flex flex-col ${theme}`} onClick={handleNavBtn} >
 
-        <div className='w-full p-1 min-h-screen relative flex flex-col dark:bg-slate-800 dark:text-slate-400'>
-          
+        <div className='dark:bg-slate-800 dark:text-slate-400'>
           <ToastContainer position='bottom-center' autoClose={1000} hideProgressBar={false} closeOnClick pauseOnFocusLoss draggable pauseOnHover theme={theme} transition={Bounce} />
 
           <TopNav theme={theme} setTheme={setTheme} />
-          
-          <div className={`w-full h-full flex-1 flex flex-row flex-wrap relative`}>
 
-            <CollapsSideNav collapsNavData={[...SIDE_NAV_MAIN_LINKS, ...VIDEO_CATEGORY_LINKS]} />
+          <div className={`w-full h-full flex-1 relative`}>
 
-            <div className="w-full h-full scroll-smooth flex flex-row">
+            <div className="w-full h-full flex-1 scroll-smooth flex flex-row">
               <SideNav sideNavData={[...SIDE_NAV_MAIN_LINKS, ...SIDE_NAV_USER_LINKS]} />
               <Routes>
                 <Route path='/' element={<Home />} />

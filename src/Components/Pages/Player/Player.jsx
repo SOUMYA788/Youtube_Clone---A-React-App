@@ -20,11 +20,11 @@ export const Player = () => {
     }, [videoId])
 
 
-
     const full_width_height = {
         width: "100%",
         height: "100%"
     }
+
 
     const playerContainerStyle = {
         ...full_width_height,
@@ -32,6 +32,7 @@ export const Player = () => {
         flexDirection: { xs: "column", sm: "row" }
     }
 
+    
     const playerBoxStyle = {
         height: "100%",
         flex: "1",

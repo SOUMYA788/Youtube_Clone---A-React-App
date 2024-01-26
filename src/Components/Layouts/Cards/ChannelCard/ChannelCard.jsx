@@ -4,40 +4,25 @@ import { Box, Typography } from '@mui/material'
 
 import "./ChannelCard.css"
 
-export const ChannelCard = ({ channelCardInfo, channelCardDirection, channelCardLogoSize }) => {
+export const ChannelCard = ({ channelCardInfo, cardDirection, cardLogoStyle }) => {
 
   const { channelId } = useParams();
 
   const { channelTitle } = channelCardInfo;
 
   const checkLogoImg = (url) => {
-    if (url.toString().startsWith("http:")) {
+    if (url?.toString()?.startsWith("http:")) {
       return `https:${url.toString().slice(5)}`;
-    } else if (url.toString().startsWith("//")) {
+    } else if (url?.toString()?.startsWith("//")) {
       return `https:${url}`;
     } else {
       return url;
     }
   }
 
-  const channelBoxContainer = {
-    width: {
-      xs: channelCardDirection ? "100%" : "50vw",
-      sm: "100%"
-    },
-    height: {
-      xs: channelCardDirection ? "100%" : "50vw",
-      sm: "100%"
-    },
-    margin: channelCardDirection ? "0" : "0 auto",
-    display: "flex",
-    flexDirection: channelCardDirection || "column",
-    alignItems: "center"
-  }
-
   const channelLogoStyle = {
-    width: channelCardLogoSize || "100%",
-    height: channelCardLogoSize || "100%",
+    width: cardLogoStyle || "100%",
+    height: cardLogoStyle || "100%",
     borderRadius: "50%",
     margin: "0 auto",
   }
@@ -45,22 +30,22 @@ export const ChannelCard = ({ channelCardInfo, channelCardDirection, channelCard
   const channelLink = {
     display: "flex",
     flexDirection: "column",
-    width: (!channelCardLogoSize) && "65%",
+    width: (!cardLogoStyle) && "65%",
     textDecoration: "none",
     color: "black",
   }
 
   const logoImgHolderLink = {
     ...channelLink,
-    height: channelCardLogoSize ? "100%" : "65%",
-    margin: channelCardDirection ? "0 10px 0 0" : "2%",
+    height: cardLogoStyle ? "100%" : "65%",
+    margin: cardDirection ? "0 10px 0 0" : "2%",
   }
   const channelLogoDetails = {
     ...channelLink,
-    height: channelCardLogoSize ? "100%" : "35%",
+    height: cardLogoStyle ? "100%" : "35%",
     justifyContent: "center",
-    alignItems: channelCardDirection ? "flex-start" : "center",
-    marginTop: (!channelCardDirection) && "2%"
+    alignItems: cardDirection ? "flex-start" : "center",
+    marginTop: (!cardDirection) && "2%"
   }
 
   const setSubs = (subs) => {
@@ -78,25 +63,22 @@ export const ChannelCard = ({ channelCardInfo, channelCardDirection, channelCard
   }
 
   return (
-    <Box className="channelBoxContainer" sx={channelBoxContainer}>
-      <Link style={logoImgHolderLink} to={`/channel/${channelId}`}>
-        <Box component="img" src={checkLogoImg(channelCardInfo?.thumbnail[0]?.url)} sx={channelLogoStyle} alt={channelTitle} />
+    <div className={`flex w-full h-full flex-col items-center`}>
+
+      <Link className={`w-full no-underline text-black`} to={`/channel/${channelId}`}>
+        <img src={checkLogoImg(channelCardInfo?.thumbnail[0]?.url) || "/logo.svg"} className={` w-full h-full object-contain rounded-xl mx-auto bg-slate-300 dark:bg-slate-600 ${!channelCardInfo?.thumbnail[0]?.url ? "px-4" : ""}`} alt={channelTitle} />
       </Link>
 
-      <Link style={channelLogoDetails} to={`/channel/${channelId}`}>
+      <Link className={`${cardLogoStyle ? "h-full" : "w-2/3 h-1/3"} no-underline text-black flex flex-col justify-center ${cardDirection ? "items-start" : "items-center mt-3"} channelLogoDetails`} to={`/channel/${channelId}`}>
 
-        <Typography component="h2" variant='h2' sx={{ fontSize: '1em' }}>
+        <h2 className='text-lg font-semibold text-black dark:text-slate-100 tracking-wide'>
           {channelTitle || channelCardInfo?.title}
-        </Typography>
+        </h2>
 
-        {channelCardInfo?.subscriberCount && <Typography component="p" variant='p' sx={{ fontSize: "0.8em" }}>
-
-          {setSubs(channelCardInfo?.subscriberCount)}
-
-        </Typography>}
+        {channelCardInfo?.subscriberCount && <p className='text-sm text-slate-800 dark:text-slate-300'> {setSubs(channelCardInfo?.subscriberCount)}</p>}
 
       </Link>
 
-    </Box >
+    </div >
   )
 }
