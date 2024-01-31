@@ -41,6 +41,34 @@ export const SIDE_NAV_USER_LINKS = [
     },
 ]
 
+export const USER_DASHBOARD_LINKS =[
+    {
+        id:"user_dashboard_link_01",
+        title:"create channel",
+        url:"/dashboard/channel",
+    },
+    {
+        id:"user_dashboard_link_02",
+        title:"watch list",
+        url:"/dashboard/watchlist",
+    },
+    {
+        id:"user_dashboard_link_03",
+        title:"uploads",
+        url:"/dashboard/uploads",
+    },
+    {
+        id:"user_dashboard_link_04",
+        title:"playlists",
+        url:"/dashboard/playlists",
+    },
+    {
+        id:"user_dashboard_link_05",
+        title:"history",
+        url:"/dashboard/history",
+    },
+]
+
 export const VIDEO_CATEGORY_LINKS = [
     {
         "icon": WhatshotOutlined,
@@ -88,3 +116,47 @@ export const VIDEO_CATEGORY_LINKS = [
         "name": "Fashion & Buity"
     },
 ]
+
+export const FILTER_OPTIONS = {
+    "type": [
+      "video",
+      "channel",
+      "playlist",
+      "flim"
+    ],
+    "duration": [
+      "short",
+      "medium",
+      "long"
+    ],
+    "features": [
+      "Live",
+      "HD",
+      "subtitles",
+      "CCommons",
+      "3D",
+      "purchased",
+      "4K",
+      "360",
+      "Location",
+      "HDR",
+      "VR180"
+    ],
+    "upload date": [
+      "hour",
+      "today",
+      "week",
+      "month",
+      "year"
+    ],
+    "sort by": [
+      "relevance",
+      "rating",
+      "date",
+      "views"
+    ]
+  }
+
+export const ONLINE_STATUS = true || window.navigator.onLine;
+
+export const OFFLINE_ALART_MESSAGE = "You Are Offline Now..."

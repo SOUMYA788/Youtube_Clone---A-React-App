@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Button = ({ type = "button", className = "", children, ...props }) => {
+const CustomButton = ({ type = "button", className = "", children, ...props }) => {
     return (
         <button type={type} className={`outline-none ${className}`} {...props}>
             {children}
@@ -8,4 +8,4 @@ const Button = ({ type = "button", className = "", children, ...props }) => {
     )
 }
 
-export default Button
+export default CustomButton

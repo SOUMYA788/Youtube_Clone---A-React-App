@@ -1,54 +1,52 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { YoutubeAPI } from '../../Assets/YoutubeAPI';
-import { FilterOptions } from '../../Assets/FilterOptions';
 import { Video } from '../'
 import { Box } from '@mui/system';
 import { Typography } from '@mui/material';
 import { Tune } from '@mui/icons-material';
+import { YoutubeAPI } from '../../API/youtube';
+import { FILTER_OPTIONS } from '../../constants';
+
+import { MdTune } from 'react-icons/md';
+import {CustomButton} from '../Layouts';
+import { showErrorToast } from '../../utils/toastMethods';
+
 
 export const Search = () => {
   const [searchVideos, setSearchVideos] = useState([]);
   const [filterStates, setFilterStates] = useState({
     type: "video",
     duration: "medium",
+    feature: [],
     upload_date: null,
     sort_by: null
   })
+
   const [featureFilter, setFeatureFilter] = useState([])
+
   const [showFilter, setShowFilter] = useState(false)
   const { searchId } = useParams();
 
-  const filterOptionsStyle = {
-    fontSize: "1em",
-    cursor: "pointer",
-    padding: "1%",
-    margin: "10px 0",
-    borderBottom: "1px solid transparent"
+
+  const filterActive = (filterItem) => {
+    return (filterStates.type === filterItem || filterStates.duration === filterItem || filterStates.upload_date === filterItem || filterStates.sort_by === filterItem || filterStates.feature.includes(filterItem))
   }
 
-  const filterOptionSxValue = (filterItem) => {
-    if (filterStates.type === filterItem || filterStates.duration === filterItem || filterStates.upload_date === filterItem || filterStates.sort_by === filterItem || featureFilter.includes(filterItem)) {
-      return ({
-        ...filterOptionsStyle,
-        borderBottom: "1px solid #bfbfbf"
-      })
-    }
-    else {
-      return ({
-        ...filterOptionsStyle
-      })
-    }
-  }
 
   const handleFilterOptionClick = (filterHeadding, filterItem) => {
     if (filterHeadding === "features") {
-      setFeatureFilter((prev) => {
-        // if feature is available in filter, then on click of that filter option, we will remove that, if not available then we adding that...
-        if (featureFilter.includes(filterItem)) {
-          return (prev.filter(prevItem => prevItem !== filterItem))
+
+      setFilterStates((prev) => {
+        if (prev.feature.includes(filterItem)) {
+          return ({
+            ...prev,
+            feature: prev.feature.filter(value => value !== filterItem)
+          })
         } else {
-          return ([...prev, filterItem])
+          return ({
+            ...prev,
+            feature: [...prev.feature, filterItem]
+          })
         }
       })
     } else {
@@ -59,68 +57,53 @@ export const Search = () => {
   }
 
   const setFilter = () => {
-    let filterLists = Object.entries(FilterOptions);
+    let filterLists = Object.entries(FILTER_OPTIONS);
     return (
       filterLists.map((filterElement, indx) => {
         let filterHeadding = filterElement[0];
         let filters = filterElement[1];
         return (
-          <Box key={`${filterHeadding}_${indx}`} sx={{ margin: "0 auto", padding: "0 5px" }}>
-            <Typography component="h2" variant='h2' sx={{ fontSize: "1em" }}>
-              {filterHeadding.toUpperCase()}
-            </Typography>
-            <Box sx={{ margin: "15px 0 0" }}>
+          <div key={`${filterHeadding}_${indx}`} className='mx-auto px-1'>
+            <h2 className='text-base'>{filterHeadding.toUpperCase()}</h2>
+
+            <div className='mt-4'>
               {
                 filters.map((filterItem, indx) => (
-                  <Typography component="p" variant='p' sx={filterOptionSxValue(filterItem)} key={`${filterItem}_${indx}`} title={filterItem}
-                    onClick={() => handleFilterOptionClick(filterHeadding, filterItem)}>
-                    {filterItem}
-                  </Typography>
+                  <p className={`text-base cursor-pointer p-1 my-2 text-slate-800 hover:text-black focus:text-black dark:text-slate-400 dark:hover:text-slate-200 dark:focus:text-slate-200 transition-all ${filterActive(filterItem) ? "text-white border-b border-slate-800 dark:border-slate-400" : ""}`} key={`${filterItem}_${indx}`} title={filterItem} onClick={() => handleFilterOptionClick(filterHeadding, filterItem)}> {filterItem} </p>
                 ))
               }
-            </Box>
-          </Box>
+            </div>
+          </div>
         )
       })
     )
   }
 
-  const manageFilter = () => {
-    if (showFilter) {
-      setShowFilter(false);
-    } else {
-      setShowFilter(true);
-    }
-  }
+  const manageFilter = () => { setShowFilter(value => !value) }
 
   useEffect(() => {
-    let { type, duration, upload_date, sort_by } = filterStates;
+    const paramsCondition = [];
 
-    let queryParamsCondition1 = [
-      type ? `&type=${type}` : "",
-      sort_by ? `&sort_by=${sort_by}` : "",
-    ].filter(queryParams => queryParams !== "")
-
-    let queryParamsCondition2 = [
-      ...queryParamsCondition1,
-      duration ? `&duration=${duration}` : "",
-      upload_date ? `&upload_date=${upload_date}` : "",
-      featureFilter.length > 0 ? `&features=${featureFilter.toLocaleString()}` : ""
-    ].filter(queryParams => queryParams !== "")
-
-    function getUrl() {
-      if (filterStates.type === "channel" || filterStates.type === "playlist" || filterStates.type === "movie") {
-        return (`search?query=${searchId}${queryParamsCondition1.join("")}`)
+    for (const key in filterStates) {
+      const value = filterStates[key];
+      if (["channel", "playlist"].includes(filterStates.type)) {
+        if (["type", "sort_by"].includes(key.toLocaleLowerCase()) && value?.length > 0) {
+          paramsCondition.push(`&${key}=${value}`)
+        }
       } else {
-        return (`search?query=${searchId}${queryParamsCondition2.join("")}`)
+        if (value?.length > 0) {
+          paramsCondition.push(`&${key}=${value}`)
+        }
       }
     }
 
-    let url = getUrl();
+    let url = `search?query=${searchId}${paramsCondition.join("")}`;
 
-    if (url) { YoutubeAPI(url).then((data) => { setSearchVideos(data.data) }) }
+    console.log(url);
+    if (url) { YoutubeAPI(url).then((data) => { setSearchVideos(data.data) }).catch(() => showErrorToast("Server Error")) }
 
   }, [searchId, filterStates, featureFilter])
+
 
   const filterBoxHeaddingStyle = {
     width: "100px",
@@ -139,23 +122,24 @@ export const Search = () => {
   }
 
   return (
-    <Box sx={{ width: '100%', height: "100%", userSelect: "none" }}>
-      <Box sx={{ margin: "1%", padding: "1%" }}>
-        <Box sx={filterBoxHeaddingStyle} onClick={manageFilter}>
-          <Tune sx={{ fontSize: "1em", marginRight: "10px" }} />
-          <Typography component="p" variant='p' fontSize="1em">
-            FILTER
-          </Typography>
-        </Box>
-        <Box component="div" variant="div" sx={{ height: "1px", width: "100%", background: "#bfbfbf", margin: "5px 0" }} />
+    <div className='w-full h-full select-none'>
+      <div className='m-2 p-2'>
+
+        <CustomButton className='w-24 flex items-center justify-center cursor-pointer transition-all rounded-full border-none text-slate-800 dark:text-slate-400 hover:text-black focus:text-black dark:hover:text-white dark:focus:text-white outline-none' onClick={manageFilter}>
+          <MdTune className='text-base mr-2' />
+          <p className='text-base'>FILTER</p>
+        </CustomButton>
+
+        <div className='h-0.5 w-full bg-slate-500 my-2' />
+
         {
-          showFilter && <Box sx={{ width: "90%", margin: "20px auto 0", display: "flex", flexDirection: "row", justifyContent: "space-between", overflowX: "scroll", scrollBehavior: "smooth", gap: "5px" }}>
+          showFilter && <div className='w-11/12 mt-5 flex justify-between overflow-x-scroll scroll-smooth gap-1'>
             {setFilter()}
-          </Box>
+          </div>
         }
-      </Box>
+      </div>
       <Video videos={searchVideos} />
-    </Box>
+    </div>
   )
 }
 

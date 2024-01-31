@@ -1,15 +1,17 @@
-import { AccountCircle, LockResetRounded, Logout } from '@mui/icons-material'
-import { Box, Button, Link, Typography } from '@mui/material'
 import React from 'react'
 import { useFirebaseAuthContext } from '../../../Context/FirebaseContext';
-import { Link as ReactLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAppContextData } from '../../../Context/AppContext';
 import { updateAppData } from '../../../Reducers/AppReducer';
+
+import CustomButton from '../CustomButton';
+import { useSelector } from 'react-redux';
+
 
 
 const TopNavUserProfileCard = () => {
     const { currentUser, logOut, deleteUserId } = useFirebaseAuthContext();
-
+    const topNavProfileCardState = useSelector(state => state.topNavProfileState.value);
     const [{ showDashboard, accountDeleteProcessing }, dispatch] = useAppContextData();
 
     const handleLogout = async () => {
@@ -43,38 +45,23 @@ const TopNavUserProfileCard = () => {
 
     return (
 
-        <Box sx={{ background: "white", position: "absolute", top: "20px", right: "0px", width: "170px", padding: "10px", display: `${showDashboard ? "flex" : "none"}`, flexDirection: "column", gap: "10px", zIndex: "101", transition: "2s ease", borderRadius: "5px", boxShadow: "-3px 3px 10px 1px rgba(0, 0, 0,0.2)" }}>
+        <div className={`w-44 p-3 bg-white dark:bg-slate-600 ring-2 ring-slate-500 absolute top-10 right-0 ${topNavProfileCardState ? "block" : "hidden"} z-[101] transition-all rounded-md shadow-sm`}>
 
-            <Typography component="h2" variant='h2' sx={{ fontSize: "0.8rem", textTransform: "uppercase", textAlign: "center", letterSpacing: "5px" }}> profile </Typography>
+            <h2 className='text-base uppercase text-center text-slate-800 dark:text-slate-100 font-semibold tracking-wider'>
+                profile
+            </h2>
 
             {/* Horizontal Line */}
-            <Box sx={{ width: "100%", height: "1px", background: "rgba(0,0,0,0.5)", margin: "5px 0" }} />
+            <div className='w-full h-0.5 bg-slate-500 mt-2 mb-4' />
 
-            <Box sx={{ display: "flex", flexDirection: "row", gap: "10px", alignItems: "center" }}>
-                <AccountCircle sx={{ width: "20px", height: "20px", color: "black" }} />
-                <Typography component="p" variant='p' sx={{ fontSize: "0.8rem" }}>
-                    {currentUser?.email?.split("@")[0]}
-                </Typography>
-            </Box>
+            <p className='w-full text-sm my-2 text-black dark:text-slate-300 text-left'> {currentUser?.email}</p>
 
-            <Link component={ReactLink} underline="none" variant='body1' color="black" to="/dashboard" sx={{ display: "flex", flexDirection: "row", gap: "10px", alignItems: "center" }}>
-                <LockResetRounded sx={{ width: "20px", height: "20px", color: "black" }} />
-                <Typography component="p" variant='p' sx={{ fontSize: "0.8rem" }}>
-                    Change Password
-                </Typography>
-            </Link>
+            <Link to="/dashboard" className='w-full block outline-none border-none my-2 text-sm text-slate-800 focus:text-black hover:text-black focus:underline underline-offset-2 dark:text-slate-300 dark:focus:text-white dark:hover:text-white transition-colors text-left'> dashboard </Link>
 
             {/* SETUP LOGOUT deleteUser */}
-            <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "10px", cursor: "pointer" }} onClick={handleLogout}>
-                <Logout sx={{ width: "20px", height: "20px", color: "black" }} />
-                <Typography component="p" variant='p' sx={{ padding: "3px 1px", fontSize: "0.8rem" }}>
-                    Log Out
-                </Typography>
-            </Box>
+            <CustomButton className='w-full text-center text-white font-semibold capitalize rounded-md bg-red-500 my-1.5 py-1 text-sm outline-none border-2 border-transparent hover:border-slate-400 focus:border-slate-400 dark:focus:border-slate-300 dark:hover:border-slate-300 disabled:hover:border-transparent' onClick={handleLogout}> Log Out </CustomButton>
 
-            <Button fullWidth disabled={accountDeleteProcessing} type="button" variant="contained" sx={{ backgroundColor: "rgb(230 0 0)", fontSize: "12px", ":hover": { backgroundColor: "rgb(255 0 0)" } }} onClick={handleUserDelete}> DELETE ACCOUNT </Button>
-
-        </Box>
+        </div>
     )
 }
 

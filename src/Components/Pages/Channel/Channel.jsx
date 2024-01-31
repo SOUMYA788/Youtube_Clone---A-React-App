@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Box } from '@mui/material'
 import { useParams } from 'react-router-dom'
-import { YoutubeAPI } from '../../../Assets/YoutubeAPI'
 import { ChannelCard, VideoCard } from '../../'
 import "./Channel.css"
 import { BiLogoYoutube } from 'react-icons/bi'
+import { YoutubeAPI } from '../../../API/youtube'
 
 export const Channel = () => {
   const [channelVideos, setChannelVideos] = useState([])

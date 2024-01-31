@@ -1,9 +1,9 @@
 import { Box, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
-import { YoutubeAPI } from '../../../Assets/YoutubeAPI';
 import {Video} from '../../';
 import "./Trending.css"
+import { YoutubeAPI } from '../../../API/youtube';
 export const Trending = () => {
   const [trendingVideos, setTrendingVideos] = useState([]);
   const { trendingId } = useParams();

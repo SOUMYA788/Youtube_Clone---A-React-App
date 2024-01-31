@@ -7,18 +7,24 @@ import { AccountCircle } from '@mui/icons-material';
 import TopNavUserProfileCard from './TopNavUserProfileCard';
 import { updateAppData } from '../../../Reducers/AppReducer';
 
+import { MdAccountCircle } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
+import { toggleProfileCardState } from '../../../Store/Slices/topNavProfileCardSlice';
+import CustomButton from '../CustomButton';
+
 const TopNavUserProfileSection = () => {
     const { currentUser } = useFirebaseAuthContext()
-    const [{ showDashboard }, dispatch] = useAppContextData();
+
+    const dispatch = useDispatch()
+    // const [{ showDashboard }, dispatch] = useAppContextData();
 
     if (!currentUser) return <Link className='no-underline text-slate-600 hover:text-black focus:text-black dark:text-slate-400 dark:hover:text-white dark:focus:text-white flex flex-row items-center justify-center outline-none transition-colors font-semibold' to="/signin">Signin</Link>
 
     return (
-        <Box onClick={() => updateAppData(dispatch, "setShowDashboard", "showDashboard", !showDashboard)} sx={{ margin: "0 10px", position: "relative" }}>
-            <AccountCircle sx={{ cursor: "pointer", width: "30px", height: "30px", color: "red" }} />
-
+        <CustomButton className='relative w-9 h-9 outline-none border-none rounded-full text-slate-500 hover:text-red-500 focus:text-red-500 ' onClick={() => dispatch(toggleProfileCardState())}>
+            <MdAccountCircle className='w-full h-full text-inherit cursor-pointer transition-colors' />
             <TopNavUserProfileCard />
-        </Box>
+        </CustomButton>
     )
 }
 

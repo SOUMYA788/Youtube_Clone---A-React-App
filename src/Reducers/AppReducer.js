@@ -6,7 +6,7 @@ export const appData = {
     logoutProcessing: false,
     accountDeleteError: null,
     accountDeleteProcessing: false,
-    showAlert: false,
+    showAlert: false,    
 }
 
 export const appDataUpdator = (state, action) => {
