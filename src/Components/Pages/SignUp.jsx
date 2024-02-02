@@ -4,14 +4,17 @@ import { useFirebaseAuthContext } from "../../Context/FirebaseContext";
 
 import { BiLock } from "react-icons/bi";
 
-import { CustomButton, CustomInput } from "../Layouts";
+import { CustomButton, CustomInput, CustomLink } from "../Layouts";
 import { validateEmail } from "../../utils/varifyInputs";
-import { showErrorToast } from "../../utils/toastMethods";
+import { showErrorToast, showSuccessToast } from "../../utils/toastMethods";
 
 import { BiLoader } from "react-icons/bi";
 import { ONLINE_STATUS } from "../../constants";
+import { createUserWithEmailAndPassword } from "../../Services/auth";
+import { useDispatch } from "react-redux";
+import { setCurrentUser } from "../../Store/Slices/authSlice";
 
-export const SignIn = () => {
+export const SignUp = () => {
 
   const { signUp } = useFirebaseAuthContext()
 
@@ -23,6 +26,7 @@ export const SignIn = () => {
 
   const [signInProcessing, setSignInProcessing] = useState(false)
 
+  const dispatch = useDispatch();
   const navigate = useNavigate()
 
   const signinInfoOnChange = (e) => {
@@ -52,18 +56,23 @@ export const SignIn = () => {
       const isEmailValid = validateEmail(userEmail);
 
       if (!isEmailValid) {
-        throw new Error("Invalid Email")
+        showErrorToast("Invalid Email")
+        return
       }
 
       // trying to signup
-      const signUpDone = await signUp(userEmail, userPassword)
-      if (!signUpDone) { throw new Error("Faild to Sign Up") }
-      navigate("/")
-      
+      const { success, message, data } = await createUserWithEmailAndPassword(userEmail, userPassword)
+      if (success) {
+        showSuccessToast(message)
+        dispatch(setCurrentUser(JSON.parse(data)));
+        navigate("/")
+      } else {
+        showErrorToast(message)
+      }
     } catch (error) {
       setSignInError("Faild to create an account")
-      showErrorToast(error.message)
-    }finally{
+      showErrorToast("faild to create an account")
+    } finally {
       setSignInProcessing(false)
     }
 
@@ -102,8 +111,7 @@ export const SignIn = () => {
           </> : "Sign In"}
         </CustomButton>
 
-        <p className="dark:text-slate-400">Already have an account? <Link to="/login" className="px-1 text-right text-slate-700 font-medium hover:text-black focus:text-black dark:text-slate-300 dark:focus:text-white dark:hover:text-white outline-none border-none"> Login</Link></p>
-
+        <p className="dark:text-slate-400">Already have an account? <CustomLink title="login" to="/login" className="w-full text-left hover:text-black focus:text-black dark:focus:text-white dark:hover:text-white" /></p>
 
       </form>
     </div>

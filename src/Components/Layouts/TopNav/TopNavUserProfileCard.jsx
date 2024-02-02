@@ -1,31 +1,47 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useFirebaseAuthContext } from '../../../Context/FirebaseContext';
 import { Link } from 'react-router-dom';
-import { useAppContextData } from '../../../Context/AppContext';
 import { updateAppData } from '../../../Reducers/AppReducer';
 
 import CustomButton from '../CustomButton';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logOut } from '../../../Services/auth';
+import { showErrorToast, showSuccessToast } from '../../../utils/toastMethods';
+import { removeCurrentUser } from '../../../Store/Slices/authSlice';
 
 
 
 const TopNavUserProfileCard = () => {
-    const { currentUser, logOut, deleteUserId } = useFirebaseAuthContext();
-    const topNavProfileCardState = useSelector(state => state.topNavProfileState.value);
-    const [{ showDashboard, accountDeleteProcessing }, dispatch] = useAppContextData();
+    const { deleteUserId } = useFirebaseAuthContext();
+    const [logoutProcessing, setLogoutProcessing] = useState(false)
+    const currentUser = useSelector(state => state?.authState?.value)
+    const topNavProfileCardState = useSelector(state => state?.topNavProfileState?.value);
 
-    const handleLogout = async () => {
+    const dispatch = useDispatch();
+    // jokhon delete function banabo, tokhon kaaje lagbe...
+    // const [{ showDashboard, accountDeleteProcessing }, dispatch] = useAppContextData();
+
+
+    const handleLogout = async (e) => {
+        e.preventDefault();
         try {
-            updateAppData(dispatch, "setLogoutProcessing", "logoutProcessing", true)
-            updateAppData(dispatch, "setLogOutError", "logOutError", null)
-            await logOut()
+            setLogoutProcessing(true);
+            const { success, message } = await logOut()
+            if (success) {
+                showSuccessToast(message)
+                dispatch(removeCurrentUser())
+            } else {
+                showErrorToast(message)
+            }
         } catch (error) {
-            updateAppData(dispatch, "setLogOutError", "logOutError", "faild to logout")
+            showErrorToast("faild to logout")
         } finally {
-            updateAppData(dispatch, "setLogoutProcessing", "logoutProcessing", false)
+            setLogoutProcessing(false);
         }
     }
 
+
+    // jokhon delete function banabo, tokhon kaaje lagbe...
     const handleUserDelete = async (e) => {
         e.preventDefault();
         try {
@@ -59,7 +75,7 @@ const TopNavUserProfileCard = () => {
             <Link to="/dashboard" className='w-full block outline-none border-none my-2 text-sm text-slate-800 focus:text-black hover:text-black focus:underline underline-offset-2 dark:text-slate-300 dark:focus:text-white dark:hover:text-white transition-colors text-left'> dashboard </Link>
 
             {/* SETUP LOGOUT deleteUser */}
-            <CustomButton className='w-full text-center text-white font-semibold capitalize rounded-md bg-red-500 my-1.5 py-1 text-sm outline-none border-2 border-transparent hover:border-slate-400 focus:border-slate-400 dark:focus:border-slate-300 dark:hover:border-slate-300 disabled:hover:border-transparent' onClick={handleLogout}> Log Out </CustomButton>
+            <CustomButton className='w-full text-center text-white font-semibold capitalize rounded-md bg-red-500 my-1.5 py-1 text-sm outline-none border-2 border-transparent hover:border-slate-400 focus:border-slate-400 dark:focus:border-slate-300 dark:hover:border-slate-300 disabled:opacity-60 disabled:hover:border-transparent' disabled={logoutProcessing} onClick={handleLogout}> Log Out </CustomButton>
 
         </div>
     )

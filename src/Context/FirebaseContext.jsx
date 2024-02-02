@@ -6,7 +6,7 @@ const FirebaseContext = createContext();
 
 export const FirebaseContextProvider = ({ children }) => {
 
-    const [currentUser, setCurrentUser] = useState(null);
+    
 
     const signUp = (email, password) => createUserWithEmailAndPassword(auth, email, password);
     const login = (email, password) => signInWithEmailAndPassword(auth, email, password);
@@ -14,15 +14,7 @@ export const FirebaseContextProvider = ({ children }) => {
     const logOut = () => auth.signOut();
     const deleteUserId = (currentUser) => deleteUser(auth, currentUser);
 
-    useEffect(() => {
-        const subscribe = auth.onAuthStateChanged((user) => {
-            setCurrentUser(user)
-        })
-        return subscribe;
-    }, []);
-
     const firebaseAuthValue = {
-        currentUser,
         signUp,
         login,
         logOut,

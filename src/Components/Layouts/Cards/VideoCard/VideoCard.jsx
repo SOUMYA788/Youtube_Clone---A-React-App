@@ -7,7 +7,7 @@ export const VideoCard = ({ videoInfo }) => {
   return (
     <>
       <LinkWrapper linkTo={videoInfo?.videoId ? `/video/${videoInfo.videoId}` : null} className=' w-full text-black outline-none border-2 border-transparent focus:border-slate-800 dark:focus:border-slate-200 rounded-xl overflow-hidden'>
-        <img src={videoInfo?.thumbnail[0]?.url || "/logo.svg"} alt={videoInfo?.title} className={`w-full object-contain rounded-xl mx-auto bg-slate-300 dark:bg-slate-600 ${!videoInfo?.thumbnail[0]?.url ? "px-4 animate-pulse" : "h-full"}`} />
+        <img src={videoInfo?.thumbnail[0]?.url || "/logo.svg"} alt={videoInfo?.title} className={`w-full object-contain rounded-xl mx-auto bg-slate-300 dark:bg-slate-600 ${!videoInfo?.thumbnail[0]?.url ? "px-4 animate-pulse flex-1" : "h-full"}`} />
       </LinkWrapper>
 
 

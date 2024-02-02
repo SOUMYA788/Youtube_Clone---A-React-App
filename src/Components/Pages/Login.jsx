@@ -1,24 +1,23 @@
-import { Lock } from "@mui/icons-material";
-import { Avatar, Box, Button, Link, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { Link as ReactLink, useNavigate } from "react-router-dom";
-import { customTheme } from "../Layouts/MuiInput";
-import { ThemeProvider, useTheme } from '@mui/material/styles';
-import { useFirebaseAuthContext } from "../../Context/FirebaseContext";
+import { useNavigate } from "react-router-dom";
+import { BiLoader, BiLock } from "react-icons/bi";
+import { CustomButton, CustomInput, CustomLink } from "../Layouts";
+import { loginWithEmailAndPassword } from "../../Services/auth";
+import { showErrorToast, showSuccessToast } from "../../utils/toastMethods";
+import { setCurrentUser } from "../../Store/Slices/authSlice";
+import { useDispatch } from "react-redux";
 
 export const Login = () => {
-    const { login } = useFirebaseAuthContext()
 
     const [loginInfo, setLoginInfo] = useState({
         userEmail: "",
         userPassword: "",
-        loginError: ""
+        loginError: null
     })
 
-    const [loginUILoading, setLoginUILoading] = useState(false)
+    const [loginProcessing, setLoginProcessing] = useState(false)
 
-    const outerTheme = useTheme();
-
+    const dispatch = useDispatch();
     const navigate = useNavigate()
 
     // a function used to set an error for login problems...
@@ -29,63 +28,75 @@ export const Login = () => {
         })
     }
 
+    const loginInputOnChange = (e) => {
+        setLoginInfo({
+            ...loginInfo,
+            loginError: null,
+            [e.target.name]: e.target.value,
+        })
+    }
+
     // function responsible to submit login form
     const handleLogin = async (e) => {
         e.preventDefault();
-        const { userEmail, userPassword } = loginInfo
+        setLoginProcessing(true);
+        setLoginError(false);
+
+        const { userEmail, userPassword } = loginInfo;
 
         // trying to login
         try {
-            setLoginUILoading(true)
-            setLoginError("")
-            await login(userEmail, userPassword)
-            navigate("/")
+            const { success, message, data } = await loginWithEmailAndPassword(userEmail, userPassword);
+            if (success) {
+                showSuccessToast(message);
+                dispatch(setCurrentUser(JSON.parse(data)));
+                navigate("/");
+            } else {
+                showErrorToast(message);
+            }
         } catch (error) {
-            setLoginError("Faild to create an account")
+            setLoginError("Faild to create an account");
+            showErrorToast("Faild to create an account");
+        } finally {
+            setLoginProcessing(false);
         }
 
-        setLoginUILoading(false)
     }
 
     return (
 
-        <Box sx={{ width: { xs: "100%", sm: "300px", }, padding: "5px", margin: "0 auto", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+        <div className="w-full 300px:w-72 p-1 mx-auto flex flex-col justify-center items-center">
 
-            <Avatar sx={{ bgcolor: loginInfo.loginError !== "" ? "red" : "green" }}>
-                <Lock />
-            </Avatar>
+            <div className={`w-10 h-10 text-black ring-2 ring-offset-1 ring-offset-transparent rounded-full p-2 ${loginInfo.loginError ? "bg-red-500 ring-red-800" : "bg-green-500 ring-green-800"}`}>
+                <BiLock className="w-full h-full text-inherit" />
+            </div>
 
-            <Typography variant="p" component="p" sx={{ margin: "5px 0 0", fontSize: "1rem" }}>
-                {loginInfo.loginError !== "" ? loginInfo.loginError : "Login"}
-            </Typography>
+            <p className="my-2 text-base"> {loginInfo.loginError || "Login"} </p>
 
-            <Box component="form" onSubmit={handleLogin} sx={{ width: "100%" }}>
+            <form onSubmit={handleLogin} className="w-full mt-5 flex flex-col items-center justify-center gap-3">
 
-                <ThemeProvider theme={customTheme(outerTheme, null, null, "red")}>
-                    <TextField margin="normal" required fullWidth label="Email ID" type="email" id="userEmail" autoComplete="email" value={loginInfo.userEmail} onChange={(e) => {
-                        setLoginInfo({
-                            ...loginInfo,
-                            userEmail: e.target.value
-                        })
-                    }} />
-                    <TextField margin="normal" required fullWidth label="Password" type="password" id="userPassword" autoComplete="current-password" value={loginInfo.userPassword} onChange={(e) => {
-                        setLoginInfo({
-                            ...loginInfo,
-                            userPassword: e.target.value
-                        })
-                    }} />
+                <CustomInput type="email" title={loginInfo.userEmail} name="userEmail" placeholder="Email ID" required autoComplete="email" onChange={loginInputOnChange} />
 
-                </ThemeProvider>
+                <CustomInput type="password" title={loginInfo.userPassword} name="userPassword" placeholder="Password" required onChange={loginInputOnChange} />
 
-                <Button disabled={loginUILoading} type="submit" fullWidth variant="contained" sx={{ backgroundColor: "rgb(230 0 0)", marginTop: "15px", marginBottom: "10px", ":hover": { backgroundColor: "rgb(255 0 0)" } }}>log in</Button>
+                <CustomButton type="submit" disabled={loginProcessing} className="bg-red-600 text-white uppercase w-full p-1.5 rounded-md my-2 ring ring-transparent focus:ring-red-700 hover:ring-red-700 disabled:hover:ring-transparent disabled:opacity-50 flex items-center justify-center gap-3">
 
-                <Box sx={{width:"100%", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:"5px", flexWrap:"wrap"}}>
-                    <Link component={ReactLink} to="/forget-password" underline="hover" color="red">Forget password?</Link>
+                    {loginProcessing ? <>
+                        <BiLoader className="animate-spin w-6 h-6 text-white" />
+                        Processing...
+                    </> : "log in"}
 
-                    <Link component={ReactLink} to="/signin" underline="hover" color="red">Need an account? Sign In first</Link>
-                </Box>
+                </CustomButton>
 
-            </Box>
-        </Box>
+
+                <CustomLink title="Forget password?" to="/forget-password" className="hover:text-red-500 focus:text-red-500 dark:hover:text-red-500 dark:focus:text-red-500" />
+
+                <p className="dark:text-slate-400">
+                    Need an account? <CustomLink title="sign in" to="/signin" className="hover:text-green-500 focus:text-green-500 dark:hover:text-green-500 dark:focus:text-green-500" />
+                </p>
+
+
+            </form>
+        </div>
     )
 }

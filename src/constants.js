@@ -44,26 +44,21 @@ export const SIDE_NAV_USER_LINKS = [
 export const USER_DASHBOARD_LINKS =[
     {
         id:"user_dashboard_link_01",
-        title:"create channel",
-        url:"/dashboard/channel",
-    },
-    {
-        id:"user_dashboard_link_02",
         title:"watch list",
         url:"/dashboard/watchlist",
     },
     {
-        id:"user_dashboard_link_03",
+        id:"user_dashboard_link_02",
         title:"uploads",
         url:"/dashboard/uploads",
     },
     {
-        id:"user_dashboard_link_04",
+        id:"user_dashboard_link_03",
         title:"playlists",
         url:"/dashboard/playlists",
     },
     {
-        id:"user_dashboard_link_05",
+        id:"user_dashboard_link_04",
         title:"history",
         url:"/dashboard/history",
     },
@@ -157,6 +152,6 @@ export const FILTER_OPTIONS = {
     ]
   }
 
-export const ONLINE_STATUS = true || window.navigator.onLine;
+export const ONLINE_STATUS = window.navigator.onLine;
 
 export const OFFLINE_ALART_MESSAGE = "You Are Offline Now..."

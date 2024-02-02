@@ -1,5 +1,4 @@
 import React from 'react'
-import { Box } from '@mui/system';
 import { VideoCard, ChannelCard } from '../../';
 
 const VideoCardWrapper = ({ children, className, ...props }) => {
@@ -15,7 +14,7 @@ export const Video = ({ videos, videoDirection }) => {
         <div className={`w-full h-full flex ${videoDirection || "flex-col 300px:flex-row flex-wrap"} 300px:gap-3 p-1 sm:p-0`}>
             {
                 (!videos?.length > 0) ? (
-                    ["loading_video_item_1", "loading_video_item_2", "loading_video_item_3"].map((value) => (
+                    ["loading_video_item_1", "loading_video_item_2", "loading_video_item_3", "loading_video_item_4", "loading_video_item_5", "loading_video_item_6"].map((value) => (
                         <VideoCardWrapper className="h-fit" key={value}>
                             <VideoCard />
                         </VideoCardWrapper>

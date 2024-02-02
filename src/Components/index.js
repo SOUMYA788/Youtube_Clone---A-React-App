@@ -1,5 +1,5 @@
 // Pages
-export {SignIn} from "./Pages/SignIn";
+export {SignUp as SignIn} from "./Pages/SignUp";
 export {Login} from "./Pages/Login"
 export {ForgetPassword} from "./Pages/ForgetPassword"
 export {DashBoard} from "./Pages/Dashboard/DashBoard"

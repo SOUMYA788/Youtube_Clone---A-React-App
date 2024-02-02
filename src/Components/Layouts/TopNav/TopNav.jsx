@@ -42,9 +42,9 @@ export const TopNav = ({ theme, setTheme }) => {
   }
 
   return (
-    <div className='w-full bg-white dark:bg-slate-800 bg-opacity-80 backdrop-blur-sm sticky top-0 left-0 z-40 py-3'>
+    <div className='w-full bg-white dark:bg-slate-800 bg-opacity-80 backdrop-blur-sm sticky top-0 left-0 z-40 pt-3 600px:pb-3'>
 
-      <div className="w-full flex flex-row items-center justify-between px-2 mb-3 ">
+      <div className={`w-full flex flex-row items-center justify-between px-2 ${ONLINE_STATUS ? "mb-3" : ""}`}>
 
         <div className="flex flex-row items-center justify-center gap-5">
           {

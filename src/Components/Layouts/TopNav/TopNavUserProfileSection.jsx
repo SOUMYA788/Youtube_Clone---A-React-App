@@ -8,12 +8,12 @@ import TopNavUserProfileCard from './TopNavUserProfileCard';
 import { updateAppData } from '../../../Reducers/AppReducer';
 
 import { MdAccountCircle } from 'react-icons/md';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggleProfileCardState } from '../../../Store/Slices/topNavProfileCardSlice';
 import CustomButton from '../CustomButton';
 
 const TopNavUserProfileSection = () => {
-    const { currentUser } = useFirebaseAuthContext()
+    const currentUser = useSelector(state => state?.authState?.value)
 
     const dispatch = useDispatch()
     // const [{ showDashboard }, dispatch] = useAppContextData();
@@ -21,10 +21,14 @@ const TopNavUserProfileSection = () => {
     if (!currentUser) return <Link className='no-underline text-slate-600 hover:text-black focus:text-black dark:text-slate-400 dark:hover:text-white dark:focus:text-white flex flex-row items-center justify-center outline-none transition-colors font-semibold' to="/signin">Signin</Link>
 
     return (
-        <CustomButton className='relative w-9 h-9 outline-none border-none rounded-full text-slate-500 hover:text-red-500 focus:text-red-500 ' onClick={() => dispatch(toggleProfileCardState())}>
-            <MdAccountCircle className='w-full h-full text-inherit cursor-pointer transition-colors' />
+        <div className='relative w-9 h-9'>
+
+            <CustomButton className='w-full h-full outline-none border-none rounded-full text-slate-500 hover:text-red-500 focus:text-red-500' onClick={() => dispatch(toggleProfileCardState())}>
+                <MdAccountCircle className='w-full h-full text-inherit cursor-pointer transition-colors' />
+            </CustomButton>
+
             <TopNavUserProfileCard />
-        </CustomButton>
+        </div>
     )
 }
 
