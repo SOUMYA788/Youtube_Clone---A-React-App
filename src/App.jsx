@@ -8,7 +8,7 @@ import { TopNav, Home, Search, Channel, Player, Trending, CollapsSideNav, SideNa
 
 import { CreateChannel, DashBoard } from './Components/Pages';
 
-import { SIDE_NAV_MAIN_LINKS, SIDE_NAV_USER_LINKS, VIDEO_CATEGORY_LINKS } from './constants';
+import { ONLINE_STATUS, SIDE_NAV_MAIN_LINKS, SIDE_NAV_USER_LINKS, VIDEO_CATEGORY_LINKS } from './constants';
 
 import "./App.css";
 import { Bounce, ToastContainer } from 'react-toastify';
@@ -18,18 +18,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { hideSideNav } from './Store/Slices/sideNavSlice';
 import { removeProfileCard } from './Store/Slices/topNavProfileCardSlice';
 import DashboardCommonPage from './Components/Pages/Dashboard/DashboardCommonPage';
-import { getCurrentUser } from './Services/auth';
+import { useCurrentUser } from './Services/manageUser';
+import { setCurrentUser } from './Store/Slices/authSlice';
 
 
-const PrivateRoute = () => {
-  const currentUser = getCurrentUser()
+const PrivateRoute = ({currentUser}) => {
   return (currentUser ? <Outlet /> : <Navigate to={"/login"} replace={true} />)
 }
 
 
 
 function App() {
-
+  const currentUser = useCurrentUser()
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light")
 
   const navStatus = useSelector(state => state.sideNavReducer.value);
@@ -47,9 +47,11 @@ function App() {
     if (topNavProfileCard) { dispatch(removeProfileCard()) }
   }
 
+
   useEffect(() => {
     localStorage.setItem("theme", (theme || "light"));
   }, [theme])
+
 
 
   useEffect(() => {
@@ -57,6 +59,16 @@ function App() {
       updateAppData(dispatch, "setShowAlert", "showAlert", true);
     }
   }, [accountDeleteError, logOutError, dispatch])
+
+
+
+  useEffect(() => {
+    if(currentUser){
+      console.log("currentUser from app.js", currentUser);
+      dispatch(setCurrentUser(JSON.parse(currentUser)));
+    }
+  }, [currentUser])
+
 
 
   return (
@@ -78,7 +90,7 @@ function App() {
               <Route path='/login' element={<Login />} />
               <Route path='/forget-password' element={<ForgetPassword />} />
 
-              <Route element={<PrivateRoute />} >
+              <Route element={<PrivateRoute currentUser={currentUser}/>} >
                 <Route path='/dashboard' element={<DashBoard />} />
                 <Route path='/dashboard/:dashboardLink' element={<DashboardCommonPage />} />
                 <Route path='/dashboard/create-channel' element={<CreateChannel />} />

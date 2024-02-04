@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Video } from "../"
+import { DashBoard, Video } from "../"
 import { YoutubeAPI } from '../../API/youtube'
 
 export const Home = () => {
@@ -11,6 +11,7 @@ export const Home = () => {
       .catch(() => setVideos([]))
   }, [])
 
-  return <Video videos={videos} />
+  return <DashBoard/>
+  // <Video videos={videos} />
 }
 

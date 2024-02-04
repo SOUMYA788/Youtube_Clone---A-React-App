@@ -1,12 +1,18 @@
-import { createUserWithEmailAndPassword as signUpWithEmailAndPassword, deleteUser, sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword as signUpWithEmailAndPassword, deleteUser, sendPasswordResetEmail, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { validateEmail } from "../utils/varifyInputs";
 import { auth } from "../Firebase";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setCurrentUser } from "../Store/Slices/authSlice";
+
 
 
 const returnValue = (success, message, data) => {
     if (!success || !message || !data) { throw new Error("\n\nAUTH.JS - missing one of below argument\n--> success || message || data\n\n") }
     return { success, message, data }
 }
+
+
 
 
 /**
@@ -16,6 +22,7 @@ const returnValue = (success, message, data) => {
  */
 export const createUserWithEmailAndPassword = async (email, password) => {
     try {
+        const dispatch = useDispatch();
         if (!validateEmail(email)) { throw new Error("Invalid Email ID") };
         const { user } = await signUpWithEmailAndPassword(auth, email, password);
         if (!user) { throw new Error("Faild to create your account") };
@@ -33,6 +40,7 @@ export const createUserWithEmailAndPassword = async (email, password) => {
  */
 export const loginWithEmailAndPassword = async (email, password) => {
     try {
+        const dispatch = useDispatch();
         const validatedEmail = validateEmail(email);
         if (!validatedEmail) { throw new Error("Invalid Email") }
         const userCredentials = await signInWithEmailAndPassword(auth, email, password);
@@ -42,7 +50,6 @@ export const loginWithEmailAndPassword = async (email, password) => {
             message: "login succesfully",
             data: JSON.stringify(userCredentials.user)
         }
-
     } catch (error) {
         return {
             success: false,
@@ -69,6 +76,3 @@ export const logOut = async () => {
 }
 
 
-export const getCurrentUser = () => {
-    return auth.currentUser;
-}
