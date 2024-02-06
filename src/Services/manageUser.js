@@ -7,7 +7,7 @@ export const useCurrentUser = () => {
     const [currentUser, setCurrentUser] = useState(null);
     useEffect(() => {
         const subscribe = auth.onAuthStateChanged(user => {
-            s       etCurrentUser(user)
+            setCurrentUser(user)
         });
         return subscribe
     }, [setCurrentUser])
