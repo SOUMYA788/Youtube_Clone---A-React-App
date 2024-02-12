@@ -42,9 +42,9 @@ export const TopNav = ({ theme, setTheme }) => {
   }
 
   return (
-    <div className='w-full bg-white dark:bg-slate-800 bg-opacity-80 backdrop-blur-sm sticky top-0 left-0 z-40 pt-3 600px:pb-3'>
+    <div className='w-[95%] mx-auto 600px:w-full bg-white dark:bg-slate-800 bg-opacity-80 backdrop-blur-sm sticky top-0 left-0 z-40 mt-3 mb-3 p-2'>
 
-      <div className={`w-full flex flex-row items-center justify-between px-2 ${ONLINE_STATUS ? "mb-3" : ""}`}>
+      <div className={`w-full flex flex-row items-center justify-between p-1 mb-2 relative`}>
 
         <div className="flex flex-row items-center justify-center gap-5">
           {
@@ -64,11 +64,10 @@ export const TopNav = ({ theme, setTheme }) => {
 
 
         {
-          ONLINE_STATUS && <div className={`bg-slate-200 dark:bg-slate-700 rounded-full px-2 py-1 flex-[0.5] h-full ${showMobileSearchBar ? "flex" : "hidden"} md:flex md:items-center md:justify-center`}>
+          ONLINE_STATUS && <div className={`bg-slate-200 dark:bg-slate-700 rounded-full p-1 h-full ${showMobileSearchBar ? "flex" : "hidden"} 600px:flex items-center justify-center absolute 600px:static left-0 top-0 w-full 600px:flex-[0.5] md:flex-[0.7]`}>
 
             {/* backspace icon use to remove search bar from mobile screens */}
-
-            <TopNavSearchBtn className={`${showMobileSearchBar ? "inline-block" : "hidden"} md:hidden`} onClick={() => setShowMobileSearchBar(value => !value)}>
+            <TopNavSearchBtn className={`${showMobileSearchBar ? "inline-block" : "hidden"} 600px:hidden`} onClick={() => setShowMobileSearchBar(value => !value)}>
               <MdOutlineKeyboardBackspace className={`h-full w-full`} />
             </TopNavSearchBtn>
 
@@ -91,7 +90,7 @@ export const TopNav = ({ theme, setTheme }) => {
           <ThemeSwitcher theme={theme} setTheme={setTheme} />
 
           {/* top nav right side earech Icon for mobile screens */}
-          <TopNavSearchBtn className={`md:hidden`} onClick={() => setShowMobileSearchBar(value => !value)}>
+          <TopNavSearchBtn className={`600px:hidden`} onClick={() => setShowMobileSearchBar(value => !value)}>
             <GoSearch className='w-full h-full' />
           </TopNavSearchBtn>
 

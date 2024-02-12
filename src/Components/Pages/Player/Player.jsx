@@ -51,7 +51,7 @@ export const Player = () => {
             </div>
 
             <div className='w-full h-full overflow-x-hidden overflow-y-scroll scroll-smooth 600px:w-1/3 p-2'>
-                <Video videos={relatedVideos} videoDirection="flex-col" callingFrom="video_player_page"/>
+                <Video videos={relatedVideos} callingFrom="video_player_page"/>
             </div>
         </div>
     )
