@@ -8,10 +8,8 @@ import { MdOutlineKeyboardBackspace } from "react-icons/md"
 
 import TopNavUserProfileSection from './TopNavUserProfileSection';
 
-import {CustomButton, ThemeSwitcher} from "../"
+import { CollapsSideNav, CustomButton, ThemeSwitcher } from "../"
 
-
-import { CollapsSideNav } from '../CollapsSideNav/CollapsSideNav';
 import { ONLINE_STATUS, SIDE_NAV_MAIN_LINKS, VIDEO_CATEGORY_LINKS } from '../../../constants';
 import { toggleSideNav } from '../../../Store/Slices/sideNavSlice';
 
@@ -27,6 +25,7 @@ const TopNavSearchBtn = ({ children, className, ...props }) => {
 
 export const TopNav = ({ theme, setTheme }) => {
   const [searchValue, setSearchValue] = useState("")
+  const [searchInputDisabled, setSearchInputDisabled] = useState(true);
   const [showMobileSearchBar, setShowMobileSearchBar] = useState(false);
   const navStatus = useSelector(state => state.sideNavReducer.value)
 
@@ -37,6 +36,7 @@ export const TopNav = ({ theme, setTheme }) => {
     e.preventDefault();
     if (searchValue) {
       navigate(`/search/${searchValue}`)
+
     }
     setSearchValue("")
   }
@@ -69,9 +69,7 @@ export const TopNav = ({ theme, setTheme }) => {
             {/* backspace icon use to remove search bar from mobile screens */}
 
             <TopNavSearchBtn className={`${showMobileSearchBar ? "inline-block" : "hidden"} md:hidden`} onClick={() => setShowMobileSearchBar(value => !value)}>
-
               <MdOutlineKeyboardBackspace className={`h-full w-full`} />
-
             </TopNavSearchBtn>
 
             <form className='h-full w-full rounded-full flex flex-row items-center justify-center' onSubmit={searchSubmit}>
@@ -96,9 +94,7 @@ export const TopNav = ({ theme, setTheme }) => {
           <TopNavSearchBtn className={`md:hidden`} onClick={() => setShowMobileSearchBar(value => !value)}>
             <GoSearch className='w-full h-full' />
           </TopNavSearchBtn>
-          {
-            ONLINE_STATUS && <TopNavUserProfileSection />
-          }
+
         </div>
 
       </div>

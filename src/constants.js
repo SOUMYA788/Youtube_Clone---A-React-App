@@ -79,37 +79,7 @@ export const VIDEO_CATEGORY_LINKS = [
         "icon": MoviesIcon,
         "active_icon": MoviesIcon_Active,
         "name": "Movies"
-    },
-    {
-        "icon": HotspotIcon,
-        "active_icon": HotspotIcon_Active,
-        "name": "Live"
-    },
-    {
-        "icon": GamingIcon,
-        "active_icon": GamingIcon_Active,
-        "name": "Gamming"
-    },
-    {
-        "icon": NewsIcon,
-        "active_icon": NewsIcon_Active,
-        "name": "News"
-    },
-    {
-        "icon": SportsIcon,
-        "active_icon": SportsIcon_Active,
-        "name": "Sports"
-    },
-    {
-        "icon": LearningIcon,
-        "active_icon": LearningIcon_Active,
-        "name": "Learning"
-    },
-    {
-        "icon": FashionAndBuityIcon,
-        "active_icon": FashionAndBuityIcon_Active,
-        "name": "Fashion & Buity"
-    },
+    },    
 ]
 
 export const FILTER_OPTIONS = {

@@ -1,8 +1,7 @@
-import { Box, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { Link, useParams, } from 'react-router-dom';
-import { Video } from '../../';
+import { Video } from '../../Layouts';
 
 import "./Player.css"
 import { YoutubeAPI } from '../../../API/youtube';
@@ -19,11 +18,13 @@ export const Player = () => {
 
         YoutubeAPI(`video?id=${videoId}`).then(data => setPlayerVideos(data)).catch(err => console.log(err.message))
 
-        YoutubeAPI(`related?id=${videoId}`).then((data) => { setRelatedVideos(data) }).catch(err => console.log(err.message))
+        YoutubeAPI(`related?id=${videoId}`).then((data) => { setRelatedVideos(data.data) }).catch(err => console.log(err.message))
 
     }, [videoId])
 
 
+    console.log(relatedVideos)
+    // return null
     const { id, title, channelTitle, channelId, viewCount } = playerVideos;
 
     return (
@@ -31,7 +32,7 @@ export const Player = () => {
 
             <div className="w-full 600px:flex-1 flex flex-col justify-center items-start p-3">
 
-                <div className={`${id ? "w-full" : "w-full h-[50vw] 300px:w-72 300px:h-36 bg-slate-200 dark:bg-slate-700 rounded-md animate-pulse"} mx-auto`} >
+                <div className={`${id ? "w-full" : "w-full 300px:w-72 300px:h-36 bg-slate-200 dark:bg-slate-700 rounded-md animate-pulse"} h-full mx-auto`} >
                     {
                         id && <ReactPlayer controls url={`https://www.youtube.com/watch?v=${id}`} width="100%" height="100%" />
                     }
@@ -49,8 +50,8 @@ export const Player = () => {
 
             </div>
 
-            <div className='w-full h-full overflow-x-hidden overflow-y-scroll scroll-smooth 600px:w-1/3'>
-                <Video videos={relatedVideos} videoDirection="flex-col" />
+            <div className='w-full h-full overflow-x-hidden overflow-y-scroll scroll-smooth 600px:w-1/3 p-2'>
+                <Video videos={relatedVideos} videoDirection="flex-col" callingFrom="video_player_page"/>
             </div>
         </div>
     )

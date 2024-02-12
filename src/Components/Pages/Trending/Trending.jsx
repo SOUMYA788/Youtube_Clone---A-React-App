@@ -1,9 +1,9 @@
-import { Box, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
-import {Video} from '../../';
-import "./Trending.css"
+import { Video, VideoCard, VideoCardWrapper } from '../../Layouts';
 import { YoutubeAPI } from '../../../API/youtube';
+
+
 export const Trending = () => {
   const [trendingVideos, setTrendingVideos] = useState([]);
   const { trendingId } = useParams();
@@ -17,46 +17,35 @@ export const Trending = () => {
   ]
 
 
+  console.log(trendingVideos);
+
   return (
-    <Box sx={{ width: "100%", height: "100%", padding:"5px" }}>
+    <div className='w-full h-full p-1'>
 
-      <Box sx={{
-        width: "100%",
-        height: "100px",
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center"
-      }}>
-        <Box component="img" src='https://www.youtube.com/img/trending/avatar/trending.png' sx={{
-          width: "70px",
-          height: "70px",
-          borderRadius: "50%",
-          marginRight:"15px"
-        }} />
-        <Typography component="h2" variant='h2' sx={{ fontSize: "2em" }}>Trending</Typography>
-      </Box>
+      <div className='w-full h-28 flex flex-row items-center' >
+        <img src="https://www.youtube.com/img/trending/avatar/trending.png" alt="trending_page_logo" className='w-16 h-16 rounded-full mr-4' />
+        <h2 className='text-2xl'>Trending</h2>
+      </div>
 
-      <Box sx={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        gap: "10px"
-      }}>
+      <div className='w-full flex flex-row items-center gap-3'>
         {
           tredingItems.map((trendingItemsElement, indx) => (
             <NavLink className="trendingLinks" to={`/trending/${trendingItemsElement.toLowerCase()}`} key={`${trendingItemsElement}_${indx}`}>
-              <Typography component="p" variant='p' sx={{ fontSize: "1em", padding:"3px 15px" }}>
-                {trendingItemsElement}
-              </Typography>
+              <p className='text-base py-1 px-4'> {trendingItemsElement} </p>
             </NavLink>
           ))
         }
-      </Box>
+      </div>
 
-      <Box>
-        <Video videos={trendingVideos}/>
-      </Box>
-    </Box>
+      <div className='w-full flex justify-center 600px:justify-normal flex-wrap mt-4 300px:gap-3 md:gap-7'>
+
+        {
+          trendingVideos?.length > 0 && trendingVideos.map((video, videoIndex) => (<VideoCardWrapper key={`trending_videos_${videoIndex}`}>
+            <VideoCard videoInfo={video} />
+          </VideoCardWrapper>
+          ))
+        }
+      </div>
+    </div>
   )
 }
